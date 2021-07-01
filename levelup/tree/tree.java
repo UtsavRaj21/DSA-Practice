@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class tree {
     public static class TreeNode {
@@ -204,7 +204,7 @@ public static int distanceK_01(TreeNode root, TreeNode target, int k, ArrayList<
             if(a.size()==0) break;
             ans.add(a);
         }
-
+      
         return ans;
     }
 
@@ -250,6 +250,59 @@ public static int distanceK_01(TreeNode root, TreeNode target, int k, ArrayList<
         
         burningTree_helper(root, target, ans);
     }
+
+    public static void kdown(TreeNode root, int time, TreeNode blockNode, ArrayList<ArrayList<Integer>> ans,
+            HashSet<Integer> water) {
+        if (root == null || root == blockNode || water.contains(root.val))
+            return;
+
+        if (time == ans.size())
+            ans.add(new ArrayList<>());
+        ans.get(time).add(root.val);
+
+        kdown(root.left, time + 1, blockNode, ans,water);
+        kdown(root.right, time + 1, blockNode, ans,water);
+    }
+
+    // -1 : did we gett the target node, -2 : fire will not reach that node, t > 0 :
+    // fire will reach with time t.
+    public static int burningTreeWithWater(TreeNode root, int target, ArrayList<ArrayList<Integer>> ans,
+            HashSet<Integer> water) {
+        if (root == null)
+            return -1;
+        if (root.val == target) {
+            if (!water.contains(root.val)) {
+                kdown(root, 0, null, ans,water);
+                return 1;
+            } else
+                return -2;
+        }
+
+        int ld = burningTreeWithWater(root.left, target, ans, water);
+        if (ld > 0) {
+            if (!water.contains(root.val)) {
+                kdown(root, ld, root.left, ans,water);
+                return ld + 1;
+            }
+            return -2;
+        }
+        if (ld == -2)
+            return -2;
+
+        int rd = burningTreeWithWater(root.right, target, ans, water);
+        if (rd > 0) {
+            if (!water.contains(root.val)) {
+                kdown(root, rd, root.right, ans , water);
+                return rd + 1;
+            }
+            return -2;
+        }
+        if (rd == -2)
+            return -2;
+
+        return -1;
+    }
+
 
 
 
