@@ -501,6 +501,56 @@ public class basic {
         return start;
     }
 
+    //imp
+    public static ListNode cycleNode2(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                break;
+            }
+        }
+
+        if (fast != slow)
+            return null;
+
+        ListNode cyclenode = fast;
+        slow = head;
+
+        int a = 0, b = 0, c = 0, bc = 0, ndash = 0, n = 0; // a= tail ,b = cylcenode.next to meetingpoint , c
+                                                           // =meetingpoint.next to cyclenode , n=cycle befor meeting ,
+                                                           // ndash = cycle after meeting , bc = total nodes in
+                                                           // cycle(b+c)
+
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+            if (fast == cyclenode)
+                ndash++;
+            a++;
+        }
+
+        fast = cyclenode;
+        fast = fast.next;
+        bc = 1;
+        while (fast != cyclenode) {
+            fast = fast.next;
+            bc++;
+        }
+
+        n = ndash + 1;
+        c = a - (bc * ndash);
+        b = bc - c;
+
+        return cyclenode;
+    }
+
     public static ListNode IntersectionNodeInTwoLLFloyad(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) {
             return null;
@@ -552,9 +602,9 @@ public class basic {
         return smallestNode;
     }
 
-    ListNode th = null, tt = null;
+    static ListNode th = null, tt = null;
 
-    public void addFirst(ListNode node) {
+    public static void addFirst(ListNode node) {
         if (th == null)
             th = tt = node;
         else {
@@ -563,7 +613,7 @@ public class basic {
         }
     }
 
-    public ListNode reverseKGroup(ListNode head, int k) {
+    public static ListNode reverseKGroup(ListNode head, int k) {
         if (head.next == null || k == 1)
             return head;
 
@@ -597,7 +647,7 @@ public class basic {
         return ph;
     }
 
-    public ListNode reverseBetween(ListNode head, int left, int right) {
+    public static ListNode reverseBetween(ListNode head, int left, int right) {
         if (head == null || head.next == null)
             return head;
         if (left == right)
@@ -627,7 +677,7 @@ public class basic {
         return head;
     }
 
-    public ListNode deleteDuplicates(ListNode head) {
+    public static ListNode deleteDuplicates(ListNode head) {
         if (head == null || head.next == null)
             return head;
 
@@ -651,7 +701,7 @@ public class basic {
 
     }
 
-    public ListNode deleteDuplicatesAll(ListNode head) {
+    public static ListNode deleteDuplicatesAll(ListNode head) {
         if (head == null || head.next == null)
             return head;
 
@@ -678,5 +728,29 @@ public class basic {
             ans.next = prev;
         }
         return dummy.next;
+    }
+
+    public static void printList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
+        }
+    }
+
+    public static void main(String[] args) {
+        /*
+         * The constructed linked list is: 10->12->11->11->12->11->10
+         */
+        ListNode start = new ListNode(10);
+        start.next = new ListNode(12);
+        start.next.next = new ListNode(11);
+        start.next.next.next = new ListNode(11);
+        start.next.next.next.next = new ListNode(12);
+        start.next.next.next.next.next = new ListNode(11);
+        start.next.next.next.next.next.next = new ListNode(10);
+
+        ListNode head = midNode(start);
+        printList(head);
+
     }
 }

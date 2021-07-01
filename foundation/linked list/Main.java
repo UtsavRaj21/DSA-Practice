@@ -1,17 +1,18 @@
-import java.io.*;
-import java.lang.*;
-import java.util.*;
 
-public class Main {
+public class main {
         public static void main(String[] args) throws Exception {
-            Scanner scn=new Scanner(System.in);
+            // Scanner scn=new Scanner(System.in);
             linkedlist ll = new linkedlist();
-            int n=scn.nextInt();
+            //int n=scn.nextInt();
     
             for (int i = 1; i <= 10; i++) {
                 ll.addLast(i * 10);
             }
             ll.display();
+            while(ll.size()>0){
+                System.out.print(ll.removeFirst()+" ");
+            }
+            
         }
 
         public static class linkedlist {

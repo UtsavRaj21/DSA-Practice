@@ -22,7 +22,7 @@ public class quicksortArray {
         if(si>ei){
             return;
         }
-        int pivotidx = ei;
+        int pivotidx = (si+ei)/2;
         int idx = segrigate(arr,pivotidx,si,ei);
 
         quick(arr,si,idx-1);

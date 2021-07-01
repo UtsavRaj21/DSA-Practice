@@ -1,0 +1,82 @@
+
+<html lang="en">
+
+<head>
+    <title>First Webpage</title>
+    <link rel="stylesheet" type="text/css" href="page1.css">
+</head>
+
+<style>
+    input[type=text],input[type=email],input[type=number] {
+      width: 100%;
+      padding: 6px 20px;
+      margin: 8px 0;
+      /* //display: inline-block; */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .half,select{
+      width: 48%;
+      padding: 6px 20px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .star{
+        color: red;
+    }
+    .enquiry{
+        height: 15vh;
+        padding-top: 0vh;
+        border: 1px solid #ccc;
+        padding: 6px 20px;
+        background-color: white;
+    }
+    </style>
+
+<body>
+    <div class="main-container">
+
+        <div class="container">
+
+    <h1> Customer Enquiry Form</h1>
+
+    <form>
+        <label> Customer Name</label><label class="star"> *</label><br>
+        <input type="text" size="100vw"><br>
+        <label> Contact Person</label><label class="star"> *</label><br>
+        <input type="text" size="100vw" ><br>
+        <label> Address</label>
+        <label class="star"> *</label><br>
+        <input type="text", placeholder="Street Address" ><br>
+        <input type="text", placeholder="Street Address Line 2" ><br>
+        <input  class ="half",type="text", placeholder="City" >
+        <input class ="half",type="text", placeholder="Region" ><br>
+        <input class ="half",type="text", placeholder="Postal Zipcode" >
+    
+        <select>  
+            <option>New Delhi</option>  
+            <option>Indore</option>  
+            <option>Jaipur</option>  
+            <option>Jodhpur</option>  
+            <option>Chandigarh</option>  
+            <option>Mumbai</option>  
+            <option>Bengaluru</option>  
+            <option>Lucknow</option>  
+            <option>Amritsar</option>  
+      </select>  <br>
+        <label>Phone Number</label><br>
+        <input type="number", placeholder="+918800xxxxxx"><br>
+        <label>Email Address</label><br>
+        <input type="email"><br>
+        <label> Enquiry Details</label><br>
+        <div class="enquiry" contenteditable="true"></div>
+        
+    </form>
+</div>
+</div>
+</body>
+
+</html>
