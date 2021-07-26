@@ -79,6 +79,146 @@ public class algoques {
         return mcost <= K ? superroad : -1;
     }
 
+    //959. Regions Cut By Slashes :- https://leetcode.com/problems/regions-cut-by-slashes/
+
+    // public int regionsBySlashes(String[] grid) {
+    //     int n = grid.length;
+    //     par = new int[(n+1)*(n+1)];
+    //     size = new int[(n+1)*(n+1)];
+
+    //     for(int i =0 ;i<par.length;i++){
+    //         par[i] = i;
+    //         int r = i/n,c=i%n;
+    //         if(r==0 || c==0 || r==n || c==n){
+    //             size[i] = 1;
+    //         }else{
+    //             size[i] = 0;
+    //         }
+    //     }
+
+    //     int max = 0;
+
+    //     for(int i =0 ; i<n;i++){
+    //         String s = grid[i];
+    //         for(int j =0;j<s.length();j++){
+    //             if(s.charAt(j) == ' '){
+    //                 continue;
+    //             }
+    //             int idx1 =0;
+    //             int idx2 =0;
+    //             if(s.charAt(j) == '/'){
+    //                  idx1 = i*n+(j+1);
+    //                  idx2= (i+1)*n+j;
+                    
+    //             }else if(s.charAt(j) == '\\'){
+    //                  idx1 = i*n+j;
+    //                  idx2 = (i+1)*n+(j+1);
+    //                 j++;
+    //             }
+    //             int p1 = parFind(idx1);
+    //                 int p2 = parFind(idx2);
+    //                 if(p1!=p2){
+    //                     par[p2] = p1;
+    //                     size[p1]+=size[p2];
+                        
+    //                 }
+    //             max = Math.max(max,size[p1]);
+    //         }
+    //     }
+    //     return max;
+    // }
+
+    public int regionsBySlashes(String[] grid) {
+        int n = grid.length;
+        par = new int[(n+1)*(n+1)];
+        size = new int[(n+1)*(n+1)];
+
+        for(int i =0 ;i<par.length;i++){
+            par[i] = i;
+            int r = i/n,c=i%n;
+            if(r==0 || c==0 || r==n || c==n){
+                par[i] = 0; 
+            }
+        }
+
+        int max = 1;
+
+        for(int i =0 ; i<n;i++){
+            String s = grid[i];
+            for(int j =0;j<s.length();j++){
+                if(s.charAt(j) == ' '){
+                    continue;
+                }
+                int idx1 =0;
+                int idx2 =0;
+                if(s.charAt(j) == '/'){
+                     idx1 = i*n+(j+1);
+                     idx2= (i+1)*n+j;
+                    
+                }else if(s.substring(j,j+1).equals("\\")){
+                     idx1 = i*n+j;
+                     idx2 = (i+1)*n+(j+1);
+                    
+                }
+                int p1 = parFind(idx1);
+                int p2 = parFind(idx2);
+                if(p1!=p2){
+                    par[p2] = p1;
+
+                }else{
+                    max++;
+                }
+               
+            }
+        }
+        return max;
+    }
+
+    // 815. Bus Routes
+
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        int n = routes.length;
+        HashMap<Integer,ArrayList<Integer>> map = new HashMap<>();
+        for(int bus =0;bus<routes.length;bus++){
+            
+            for(int busStand:routes[bus]){
+                map.putIfAbsent(bus, new ArrayList<>());;
+                map.get(busStand).add(bus);
+            }
+        }
+
+        HashSet<Integer> busStandVis = new HashSet<>();
+        boolean[] busVis = new boolean[n];
+
+        int interchange = 0;
+        LinkedList<Integer> que = new LinkedList<>();
+        que.addLast(source);
+        busStandVis.add(source);
+
+        while(que.size()>0){
+            int s = que.size();
+            while(s-->0){
+                int busStand = que.removeFirst();
+                for(int bus : map.get(busStand)){
+                    if(busVis[bus]){
+                        continue;
+                    }
+                    for(int upcomingBusStand : routes[bus]){
+                        if(!busStandVis.contains(busStand)){
+                            busStandVis.add(busStand);
+                            que.add(busStand);
+                            if(upcomingBusStand == target){
+                                return interchange +1;
+                            }
+                        }
+                    }
+                    busVis[bus] = true;
+                }
+            }
+            interchange++;
+        }
+        return interchange;
+    }
     public static void main(String[] args) {
         // int n =3;
         // int[] wells = {1,2,2};
