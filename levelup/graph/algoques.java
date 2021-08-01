@@ -41,6 +41,8 @@ public class algoques {
         return ans;
     }
 
+    //hackerEarth : Mr. President ----------------
+    
     public static int mrPresident(int[][] edges, int N, int K) {
         par = new int[N + 1];
         for (int i = 0; i <= N; i++) {
@@ -80,53 +82,6 @@ public class algoques {
     }
 
     //959. Regions Cut By Slashes :- https://leetcode.com/problems/regions-cut-by-slashes/
-
-    // public int regionsBySlashes(String[] grid) {
-    //     int n = grid.length;
-    //     par = new int[(n+1)*(n+1)];
-    //     size = new int[(n+1)*(n+1)];
-
-    //     for(int i =0 ;i<par.length;i++){
-    //         par[i] = i;
-    //         int r = i/n,c=i%n;
-    //         if(r==0 || c==0 || r==n || c==n){
-    //             size[i] = 1;
-    //         }else{
-    //             size[i] = 0;
-    //         }
-    //     }
-
-    //     int max = 0;
-
-    //     for(int i =0 ; i<n;i++){
-    //         String s = grid[i];
-    //         for(int j =0;j<s.length();j++){
-    //             if(s.charAt(j) == ' '){
-    //                 continue;
-    //             }
-    //             int idx1 =0;
-    //             int idx2 =0;
-    //             if(s.charAt(j) == '/'){
-    //                  idx1 = i*n+(j+1);
-    //                  idx2= (i+1)*n+j;
-                    
-    //             }else if(s.charAt(j) == '\\'){
-    //                  idx1 = i*n+j;
-    //                  idx2 = (i+1)*n+(j+1);
-    //                 j++;
-    //             }
-    //             int p1 = parFind(idx1);
-    //                 int p2 = parFind(idx2);
-    //                 if(p1!=p2){
-    //                     par[p2] = p1;
-    //                     size[p1]+=size[p2];
-                        
-    //                 }
-    //             max = Math.max(max,size[p1]);
-    //         }
-    //     }
-    //     return max;
-    // }
 
     public int regionsBySlashes(String[] grid) {
         int n = grid.length;
@@ -218,6 +173,43 @@ public class algoques {
             interchange++;
         }
         return interchange;
+    }
+    
+    //685. Redundant Connection II :- https://leetcode.com/problems/redundant-connection-ii/
+
+    public int[] findRedundantDirectedConnection(int[][] edges) {
+        int m = edges.length;
+        int n = m+1;
+        par = new int[n];
+        for(int i = 0 ; i< n; i++){
+            par[i]=i;
+        }
+
+        int[] arr = new int[n];
+        int[] ans1=  null;
+        int[] ans2=  null;
+        for(int[] edge: edges){
+            int u = edge[0] , v = edge[1];
+            if(arr[v]>0){
+                ans1 = new int[]{arr[v],v};
+                ans2 = edge;
+            }
+            arr[v] = u;
+        }
+
+        for(int[] edge: edges){
+            int u = edge[0] , v = edge[1];
+            if(ans2 == edge) continue;
+            int p1 = parFind(u);
+            int p2 = parFind(v);
+            if(p1!=p2){
+                par[p2] = p1;
+            }else{
+                return ans1 == null?edge:ans1;
+            }
+        }
+
+        return ans2;
     }
     public static void main(String[] args) {
         // int n =3;
