@@ -210,7 +210,8 @@ public class basic {
         return maxGold;
     }
 
-    // 1219. Path with Maximum Gold :https://leetcode.com/problems/path-with-maximum-gold/
+    // 1219. Path with Maximum Gold
+    // :https://leetcode.com/problems/path-with-maximum-gold/
 
     public int getMaximumGold(int[][] grid) {
         int n = grid.length, m = grid[0].length;
@@ -246,118 +247,113 @@ public class basic {
         return res + max;
     }
 
-     //  70. Climbing Stairs
+    // 70. Climbing Stairs
 
-    public int fibo_memo(int n, int[] dp){
+    public int fibo_memo(int n, int[] dp) {
         if (n <= 1) {
-                return dp[n] = 1;
-            }
-    
-            if (dp[n] != -1)
-                return dp[n];
-    
-            int ans = fibo_memo(n - 1, dp) + fibo_memo(n - 2, dp);
-            return dp[n] = ans;
+            return dp[n] = 1;
         }
-        
-        public int fibo_DP(int N, int[] dp){
-            for(int n=0;n<=N;n++){
+
+        if (dp[n] != -1)
+            return dp[n];
+
+        int ans = fibo_memo(n - 1, dp) + fibo_memo(n - 2, dp);
+        return dp[n] = ans;
+    }
+
+    public int fibo_DP(int N, int[] dp) {
+        for (int n = 0; n <= N; n++) {
             if (n <= 1) {
                 dp[n] = 1;
                 continue;
             }
-    
+
             // if (dp[n] != -1)
-            //     return dp[n];
-    
+            // return dp[n];
+
             int ans = dp[n - 1] + dp[n - 2];// fibo_memo(n - 1, dp) + fibo_memo(n - 2, dp);
-                 dp[n] = ans;
+            dp[n] = ans;
+        }
+        return dp[N];
+    }
+
+    public int climbStairs_opti(int n) {
+        int a = 1, b = 1;
+        for (int i = 0; i < n; i++) {
+            int sum = a + b;
+            a = b;
+            b = sum;
+        }
+
+        return a;
+    }
+
+    public int climbStairs(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+        // fibo_memo(n,dp);
+        fibo_DP(n, dp);
+        return dp[n];
+    }
+
+    // 746. Min Cost Climbing Stairs :-
+    // https://leetcode.com/problems/min-cost-climbing-stairs/
+
+    public int ClimbingStairs_memo(int n, int[] dp, int[] cost) {
+        if (n <= 1) {
+            return dp[n] = cost[n];
+
+        }
+        if (dp[n] != -1)
+            return dp[n];
+
+        int climb = Math.min(ClimbingStairs_memo(n - 1, dp, cost), ClimbingStairs_memo(n - 2, dp, cost));
+        if (n != cost.length) {
+            return dp[n] = climb + cost[n];
+        } else {
+            return dp[n] = climb;
+        }
+
+    }
+
+    public int ClimbingStairs_DP(int N, int[] dp, int[] cost) {
+        for (int n = 0; n <= N; n++) {
+            if (n <= 1) {
+                dp[n] = cost[n];
+                continue;
             }
-              return  dp[N];
-        }
+            // if (dp[n] != -1)
+            // return dp[n];
 
-        public int climbStairs_opti(int n) {
-            int a = 1, b = 1;
-            for (int i = 0; i < n; i++) {
-                int sum = a + b;
-                a = b;
-                b = sum;
+            int climb = Math.min(dp[n - 1], dp[n - 2]); // Math.min(ClimbingStairs(n-1,dp,cost),ClimbingStairs(n-2,dp,cost))
+            if (n != cost.length) {
+                dp[n] = climb + cost[n];
+            } else {
+                dp[n] = climb;
             }
-    
-            return a;
+        }
+        return dp[N];
+    }
+
+    public int ClimbingStairs_opti(int[] cost) {
+        int a = cost[0], b = cost[1];
+        for (int i = 2; i <= cost.length; i++) {
+            int minCost = Math.min(a, b) + (i == cost.length ? 0 : cost[i]);
+            a = b;
+            b = minCost;
         }
 
-        public int climbStairs(int n) {
-            int[] dp = new int[n + 1];
-            Arrays.fill(dp, -1);
-            //fibo_memo(n,dp);
-            fibo_DP(n,dp);
-                return dp[n];
-        }
+        return b;
+    }
 
-        //746. Min Cost Climbing Stairs :- https://leetcode.com/problems/min-cost-climbing-stairs/
+    public int minCostClimbingStairs(int[] cost) {
+        int[] dp = new int[cost.length + 1];
 
- 
-        
-         public int ClimbingStairs_memo(int n,int[] dp,int[] cost){
-             if(n<=1){
-                  return dp[n] = cost[n];
-                  
-             }
-             if (dp[n] != -1)
-                return dp[n];
-             
-             int climb=Math.min(ClimbingStairs_memo(n-1,dp,cost),ClimbingStairs_memo(n-2,dp,cost)) ;
-             if(n!=cost.length){
-                 return dp[n] = climb+cost[n];
-             }
-             else{
-                  return dp[n] = climb;
-             }
-                
-         }
-        
-        public int ClimbingStairs_DP(int N,int[] dp,int[] cost){
-            for(int n=0;n<=N;n++){
-             if(n<=1){
-                   dp[n] = cost[n];
-                  continue;
-             }
-             // if (dp[n] != -1)
-             //    return dp[n];
-             
-             int climb=Math.min(dp[n-1],dp[n-2]);  //Math.min(ClimbingStairs(n-1,dp,cost),ClimbingStairs(n-2,dp,cost)) 
-             if(n!=cost.length){
-                 dp[n] = climb+cost[n];
-             }
-             else{
-                  dp[n] = climb;
-             }
-            }
-            return dp[N];
-         }
-
-         public int ClimbingStairs_opti(int[] cost){
-             int a = cost[0],b = cost[1];
-             for(int i =2;i<=cost.length;i++){
-                 int minCost = Math.min(a,b) + (i==cost.length?0:cost[i]);
-                 a=b;
-                 b=minCost;
-             }
-
-             return b;
-         }
-
-         public int minCostClimbingStairs(int[] cost) {
-            int[] dp = new int[cost.length + 1];
-            
-            Arrays.fill(dp, -1);
-            //ClimbingStairs(cost.length,dp,cost);
-            ClimbingStairs_DP(cost.length,dp,cost);
-            return dp[cost.length];  
-        }
-       
-    
+        Arrays.fill(dp, -1);
+        // ClimbingStairs(cost.length,dp,cost);
+        ClimbingStairs_DP(cost.length, dp, cost);
+        return dp[cost.length];
+    }
 
     public static void mazePath_Set() {
         int sr = 0, sc = 0, er = 2, ec = 2;
@@ -372,48 +368,48 @@ public class basic {
 
     // board
 
-    public static int boardPath_memo(int sp,int ep,int[] dp){
-        if(sp == ep){
+    public static int boardPath_memo(int sp, int ep, int[] dp) {
+        if (sp == ep) {
             dp[sp] = 1;
             return dp[sp];
         }
 
-        if(dp[sp]!=0) return dp[sp];
-        int count =0;
-        for(int dice=1;dice<=6 && sp+dice<=ep ; dice++){
-            count+=boardPath_memo(dice+sp, ep, dp);
+        if (dp[sp] != 0)
+            return dp[sp];
+        int count = 0;
+        for (int dice = 1; dice <= 6 && sp + dice <= ep; dice++) {
+            count += boardPath_memo(dice + sp, ep, dp);
         }
 
         return dp[sp] = count;
     }
 
-    public static int boardPath_tabu(int SP,int ep,int[] dp){
-        for(int sp=ep;sp>=SP;sp--){
-            if(sp == ep){
+    public static int boardPath_tabu(int SP, int ep, int[] dp) {
+        for (int sp = ep; sp >= SP; sp--) {
+            if (sp == ep) {
                 dp[sp] = 1;
                 continue;
             }
-    
-            int count =0;
-            for(int dice=1;dice<=6 && sp+dice<=ep ; dice++){
-                count+=dp[sp+dice];//boardPath_memo(dice+sp, ep, dp);
+
+            int count = 0;
+            for (int dice = 1; dice <= 6 && sp + dice <= ep; dice++) {
+                count += dp[sp + dice];// boardPath_memo(dice+sp, ep, dp);
             }
-    
+
             dp[sp] = count;
         }
         return dp[SP];
     }
 
-    public static int boardPath_opti(int SP,int ep){
-
+    public static int boardPath_opti(int SP, int ep) {
         LinkedList<Integer> l = new LinkedList<Integer>();
         l.addLast(1);
         l.addLast(1);
-        for(int i = 2 ; i <= ep ; i++){
-            if(i<=6){
-                l.addLast(2*l.getLast());
-            }else{
-                l.addLast(2*l.getLast() - l.removeFirst());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        for (int i = 2; i <= ep; i++) {
+            if (i <= 6) {
+                l.addLast(2 * l.getLast());
+            } else {
+                l.addLast(2 * l.getLast() - l.removeFirst());
             }
         }
         return l.getLast();
@@ -422,14 +418,248 @@ public class basic {
     public static void board_path() {
         int sp = 0, ep = 10;
         int[] dp = new int[ep + 1];
-        //System.out.println(boardPath_memo(sp, ep, dp));
-         //System.out.println(boardPath_tabu(sp, ep, dp));
-         System.out.println(boardPath_opti(sp, ep));
+        // System.out.println(boardPath_memo(sp, ep, dp));
+        // System.out.println(boardPath_tabu(sp, ep, dp));
+        System.out.println(boardPath_opti(sp, ep));
         // display(dp);
     }
 
+    // 91. Decode Ways
+
+    // Backward
+    public static int numDecodings_memo1(String s, int idx, int[] dp) {
+        if (idx == 0) {
+            return dp[idx] = 1;
+        }
+
+        if (dp[idx - 1] != -1) {
+            return dp[idx];
+        }
+
+        if (s.charAt(idx - 1) == '0') {
+            return dp[idx] = 0;
+        }
+
+        int count = 0;
+        if (s.charAt(idx - 1) > '0') {
+            count += numDecodings_memo1(s, idx - 1, dp);
+        }
+
+        if (idx > 1) {
+            int num = (s.charAt(idx - 2) - '0') * 10 + (s.charAt(idx - 1) - '0');
+            if (num <= 26 && num >= 10) {
+                count += numDecodings_memo1(s, idx - 2, dp);
+            }
+        }
+        return dp[idx] = count;
+    }
+
+    public static int numDecodings_tabu(String s, int IDX, int[] dp) {
+        for (int idx = s.length(); idx >= 0; idx--) {
+            if (idx == s.length()) {
+                dp[idx] = 1;
+                continue;
+            }
+
+            if (s.charAt(idx) == '0') {
+                dp[idx] = 0;
+                continue;
+            }
+
+            int count = 0;
+            count += dp[idx + 1];
+
+            if (idx < s.length() - 1) {
+                int num = (s.charAt(idx) - '0') * 10 + (s.charAt(idx + 1) - '0');
+                if (num <= 26)
+                    count += dp[idx + 2];
+            }
+            dp[idx] = count;
+        }
+
+        return dp[IDX];
+    }
+
+    // Front
+    public static int numDecodings_memo2(String s, int idx, int[] dp) {
+        if (idx == s.length() - 1) {
+            return dp[idx] = 1;
+        }
+
+        if (dp[idx - 1] != -1) {
+            return dp[idx];
+        }
+
+        if (s.charAt(idx - 1) == '0') {
+            return dp[idx] = 0;
+        }
+
+        int count = 0;
+        if (s.charAt(idx - 1) > '0') {
+            count += numDecodings_memo2(s, idx - 1, dp);
+        }
+
+        if (idx > 1) {
+            int num = (s.charAt(idx - 2) - '0') * 10 + (s.charAt(idx - 1) - '0');
+            if (num <= 26 && num >= 10) {
+                count += numDecodings_memo2(s, idx - 2, dp);
+            }
+        }
+        return dp[idx] = count;
+    }
+
+    public static int numDecodings_opti(String s) {
+        if (s.length() == 0)
+            return 0;
+        int a = 0, b = 1;
+        if (s.charAt(s.length() - 1) != '0') {
+            a = 1;
+        }
+
+        for (int i = s.length() - 2; i >= 0; i--) {
+            int num = (s.charAt(i) - '0') * 10 + (s.charAt(i + 1) - '0');
+            if (s.charAt(i) == '0') {
+                b = a;
+                a = 0;
+            } else if (num > 26) {
+                b = a;
+            } else {
+                int sum = a + b;
+                b = a;
+                a = sum;
+            }
+
+        }
+
+        return a;
+    }
+
+    public static int numDecodings(String s) {
+        int[] dp = new int[s.length() + 1];
+        Arrays.fill(dp, -1);
+        // return numDecodings_memo1(s,s.length()-1,dp);
+        // return numDecodings_memo2(s,0,dp);
+        return numDecodings_opti(s);
+    }
+
+    // ***********************************************************************************************
+    // */
+    public static long numDecodingsStar_memo(String s, int idx, long[] dp) {
+        if (idx == s.length()) {
+            return dp[idx] = 1;
+        }
+
+        if (dp[idx] != -1) {
+            return dp[idx];
+        }
+
+        if (s.charAt(idx) == '0') {
+            return dp[idx] = 0;
+        }
+
+        long count = 0;
+        int mod = (int) 1e9 + 7;
+        char ch = s.charAt(idx);
+        if (ch == '*') {
+            count = (count + 9 * numDecodingsStar_memo(s, idx + 1, dp)) % mod;
+
+            if (idx < s.length() - 1) { // **,*c.
+                if (s.charAt(idx + 1) == '*') {
+                    count = (count + 15 * numDecodingsStar_memo(s, idx + 2, dp)) % mod;
+                } else if (s.charAt(idx + 1) >= '0' && s.charAt(idx + 1) <= '6') {
+                    count = (count + 2 * numDecodingsStar_memo(s, idx + 2, dp)) % mod;
+                } else if (s.charAt(idx + 1) >= '7') {
+                    count = (count + numDecodingsStar_memo(s, idx + 2, dp)) % mod;
+                }
+            }
+        } else {
+            count = (count + numDecodingsStar_memo(s, idx + 1, dp)) % mod;
+            if (idx < s.length() - 1) {
+                if (s.charAt(idx + 1) != '*') {
+                    int num = (s.charAt(idx) - '0') * 10 + (s.charAt(idx + 1) - '0');
+                    if (num <= 26) {
+                        count = (count + numDecodingsStar_memo(s, idx + 2, dp)) % mod;
+                    }
+                } else {
+                    if (ch == '1') {
+                        count = (count + 9 * numDecodingsStar_memo(s, idx + 2, dp)) % mod;
+                    } else if (ch == '2') {
+                        count = (count + 6 * numDecodingsStar_memo(s, idx + 2, dp)) % mod;
+                    }
+                }
+            }
+
+        }
+
+        return dp[idx] = count;
+    }
+
+    public static long numDecodingsStar_tabu(String s, int IDX, long[] dp) {
+        for (int idx = s.length(); idx >= 0; idx--) {
+            if (idx == s.length()) {
+                dp[idx] = 1;
+                continue;
+            }
+
+            if (dp[idx] != -1) {
+                 dp[idx];
+                 continue;
+            }
+
+            if (s.charAt(idx) == '0') {
+                 dp[idx] = 0;
+                 continue;
+            }
+
+            long count = 0;
+            int mod = (int) 1e9 + 7;
+            char ch = s.charAt(idx);
+            if (ch == '*') {
+                count = (count + 9 * dp[idx+1]) % mod; //numDecodingsStar_memo(s, idx + 1, dp)
+
+                if (idx < s.length() - 1) { // **,*c.
+                    if (s.charAt(idx + 1) == '*') {
+                        count = (count + 15 * dp[idx+2]) % mod;
+                    } else if (s.charAt(idx + 1) >= '0' && s.charAt(idx + 1) <= '6') {
+                        count = (count + 2 *dp[idx+2]) % mod;
+                    } else if (s.charAt(idx + 1) >= '7') {
+                        count = (count + dp[idx+2]) % mod;
+                    }
+                }
+            } else {
+                count = (count +dp[idx+1]) % mod;
+                if (idx < s.length() - 1) {
+                    if (s.charAt(idx + 1) != '*') {
+                        int num = (s.charAt(idx) - '0') * 10 + (s.charAt(idx + 1) - '0');
+                        if (num <= 26) {
+                            count = (count + dp[idx+2]) % mod;
+                        }
+                    } else {
+                        if (ch == '1') {
+                            count = (count + 9 *dp[idx+2]) % mod;
+                        } else if (ch == '2') {
+                            count = (count + 6 * dp[idx+2]) % mod;
+                        }
+                    }
+                }
+
+            }
+            dp[idx] = count;
+        }
+        return dp[IDX];
+    }
+
+    public int numDecodingsStar(String s) {
+        long[] dp = new long[s.length() + 1];
+        Arrays.fill(dp, -1);
+        // return (int) numDecodingsStar_memo(s, 0, dp);
+        return (int) numDecodingsStar_tabu(s, 0, dp);
+    }
+
     public static void main(String[] args) {
-        //mazePath_Set();
-         board_path() ;
-}
+        // mazePath_Set();
+        // board_path() ;
+
+        System.out.println(numDecodings("07"));
+    }
 }
