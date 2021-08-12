@@ -370,7 +370,66 @@ public class basic {
         display2D(dp);
     }
 
-    public static void main(String[] args) {
-        mazePath_Set();
+    // board
+
+    public static int boardPath_memo(int sp,int ep,int[] dp){
+        if(sp == ep){
+            dp[sp] = 1;
+            return dp[sp];
+        }
+
+        if(dp[sp]!=0) return dp[sp];
+        int count =0;
+        for(int dice=1;dice<=6 && sp+dice<=ep ; dice++){
+            count+=boardPath_memo(dice+sp, ep, dp);
+        }
+
+        return dp[sp] = count;
     }
+
+    public static int boardPath_tabu(int SP,int ep,int[] dp){
+        for(int sp=ep;sp>=SP;sp--){
+            if(sp == ep){
+                dp[sp] = 1;
+                continue;
+            }
+    
+            int count =0;
+            for(int dice=1;dice<=6 && sp+dice<=ep ; dice++){
+                count+=dp[sp+dice];//boardPath_memo(dice+sp, ep, dp);
+            }
+    
+            dp[sp] = count;
+        }
+        return dp[SP];
+    }
+
+    public static int boardPath_opti(int SP,int ep){
+
+        LinkedList<Integer> l = new LinkedList<Integer>();
+        l.addLast(1);
+        l.addLast(1);
+        for(int i = 2 ; i <= ep ; i++){
+            if(i<=6){
+                l.addLast(2*l.getLast());
+            }else{
+                l.addLast(2*l.getLast() - l.removeFirst());                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+            }
+        }
+        return l.getLast();
+    }
+
+    public static void board_path() {
+        int sp = 0, ep = 10;
+        int[] dp = new int[ep + 1];
+        //System.out.println(boardPath_memo(sp, ep, dp));
+         //System.out.println(boardPath_tabu(sp, ep, dp));
+         System.out.println(boardPath_opti(sp, ep));
+        // display(dp);
+    }
+
+    public static void main(String[] args) {
+        //mazePath_Set();
+         board_path() ;
+}
 }
