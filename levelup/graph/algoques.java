@@ -132,12 +132,13 @@ public class algoques {
     // 815. Bus Routes
 
     public int numBusesToDestination(int[][] routes, int source, int target) {
+        if(source == target) return 0;
         int n = routes.length;
         HashMap<Integer,ArrayList<Integer>> map = new HashMap<>();
         for(int bus =0;bus<routes.length;bus++){
             
             for(int busStand:routes[bus]){
-                map.putIfAbsent(bus, new ArrayList<>());;
+                map.putIfAbsent(busStand, new ArrayList<>());;
                 map.get(busStand).add(bus);
             }
         }
@@ -159,9 +160,9 @@ public class algoques {
                         continue;
                     }
                     for(int upcomingBusStand : routes[bus]){
-                        if(!busStandVis.contains(busStand)){
-                            busStandVis.add(busStand);
-                            que.add(busStand);
+                        if(!busStandVis.contains(upcomingBusStand)){
+                            busStandVis.add(upcomingBusStand);
+                            que.addLast(upcomingBusStand);
                             if(upcomingBusStand == target){
                                 return interchange +1;
                             }
@@ -172,7 +173,7 @@ public class algoques {
             }
             interchange++;
         }
-        return interchange;
+        return -1;
     }
     
     //685. Redundant Connection II :- https://leetcode.com/problems/redundant-connection-ii/

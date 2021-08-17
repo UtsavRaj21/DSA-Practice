@@ -159,6 +159,8 @@ public class dsuquestion {
          Point(int a, int b) { x = a; y = b; }
      }
 
+   
+
     public List<Integer> numIslands2(int n, int m, Point[] operators) {
         List<Integer> ans = new ArrayList<>();
         if(n==1 && m==1) return ans;
@@ -194,6 +196,60 @@ public class dsuquestion {
         return ans;
     }
 
+    //924. Minimize Malware Spread :- https://leetcode.com/problems/minimize-malware-spread/
+    
+    static int[] poc;         // population of country
+    public int minMalwareSpread(int[][] graph, int[] initial) {
+        int n = graph.length;
+        par = new int[n];
+         poc = new int[n];
+        
+        for(int i = 0 ; i < n ; i++){
+            par[i] = i;
+            poc[i] = 1;
+        }
+        
+        for(int i = 0 ; i < n ;i++){
+             int p1 = parFind(i);
+            for(int j=0 ; j<n ; j++){
+                if(i!=j){
+                 
+                    if(graph[i][j] == 1){
+                        int p2 =  parFind(j);
+                            
+                        if(p1!=p2){
+                            par[p2] = p1;
+                            poc[p1]+=poc[p2];
+                        }
+                    }
+                }
+            }
+        }
+        
+        Arrays.sort(initial);
+        
+        int[] ipc = new int[n];    // infected person in country
+        
+        for(int ip : initial){
+            int c = parFind(ip);
+            ipc[c]++;
+        }
+        
+        int maxPopulated = 0 ;
+        int c  = initial[0];
+        
+        for(int ip : initial){
+            int p = parFind(ip);
+            if(ipc[p] == 1 && maxPopulated < poc[p]){
+                maxPopulated = poc[p];
+                c=ip;
+            }
+        }
+        
+        return c;
+        
+        
+    }
     public static void main(String[] args) {
         String s1 = "parker";
         String s2 = "morris";
