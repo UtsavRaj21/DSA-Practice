@@ -140,7 +140,100 @@ public class faang {
         return -1;
     }
 
-    public static void main(String[] args) {
+    //Eulerian Path in an Undirected Graph
+   
+    public static int eulerPath(int N, int graph[][]){       // (n-2) even indegree , (2)odd indegree
+        int[] arr = new int[N];
+        for(int i=0;i<graph.length;i++){
+            for(int j=0;j<graph[0].length;j++){
+                if(graph[i][j] == 1){
+                    arr[i]++;
+                    
+                }
+               
+            }
+        }
+        
+        int even = 0;
+        int odd = 0;
+        for(int ele : arr){
+            if(ele % 2 == 0){
+                even++;
+            }else{
+                odd++;
+            }
+        }
+        
+        if(odd == 2){
+            return 1;
+        }
+        
+        return 0;
+    }
+    
+    //Euler Circuit in an Undirected Graph
 
+    public boolean isEularCircuitExist(int V, ArrayList<ArrayList<Integer>> adj)  // even indegree
+    {
+        int[] arr = new int[V];
+        for(ArrayList<Integer> a : adj){
+            for(Integer ele : a){
+                arr[ele]++;
+            }
+           
+        }
+        
+        for(int ele : arr){
+            if(ele %2 !=0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String similarity(String str ,int i,int j){
+        StringBuilder sb = new StringBuilder(str);
+        char ch1 = str.charAt(i);
+        char ch2 = str.charAt(j);
+        sb.setCharAt(i,ch2);
+        sb.setCharAt(j,ch1);
+
+        return sb.toString();
+    }
+    public static int kSimilarity(String s1, String s2) {
+        if(s1.equals(s2)) return 0;
+        
+        LinkedList<String> que = new LinkedList<>();
+        que.add(s1);
+        HashSet<String> set = new HashSet<>();
+        set.add(s1);
+        int level =0;
+        while(que.size()!=0){
+            int s = que.size();
+            while(s-->0){
+                String rstr = que.removeFirst();
+                    for(int i=0;i<rstr.length();i++){
+                        for(int j =i+1;j<rstr.length();j++){
+                            String nstr = similarity(rstr,i,j);
+                          
+                            if(nstr.equals(s2)){
+                                return level+1;
+                            }
+                            if(!set.contains(nstr)){
+                                set.add(nstr);
+                                que.addLast(nstr);
+                            }
+                        }
+                    }
+                }
+            level++;
+        }
+        return 0;
+    }
+
+
+    public static void main(String[] args) {
+        String s1 = "abcdeabcdeabcdeabcde", s2 = "aaaabbbbccccddddeeee";
+        System.out.println(kSimilarity(s1,s2));
     }
 }

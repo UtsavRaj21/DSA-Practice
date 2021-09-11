@@ -2,32 +2,44 @@ import java.util.*;
 
 public class p1 {
 
-    public static void merge(int arr1[], int arr2[], int n, int m) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (arr1[i] > arr2[j]) {
-                    int temp = arr1[i];
-                    arr1[i] = arr2[j];
-                    arr2[j] = temp;
-                    break;
-                }
+    public static String solve(String num){
+        StringBuilder sb = new StringBuilder();
+        int c=1;
+        char prev = num.charAt(0);
+        for(int i = 1; i<num.length();i++){
+            char ch = num.charAt(i);
+            if(ch==prev){
+                c++;
+            }else{
+                sb.append(c);
+                sb.append(prev);
+                prev = ch;
+                c=1;
             }
-            Arrays.sort(arr2);
         }
+
+        if(c>0){
+            sb.append(c);
+            sb.append(prev);
+        }
+
+        return sb.toString();
+    }
+
+    static String ShoutOutLoud(int n){
+        String s=Integer.toString(1);
+        String ans = "1";
+        for(int i = 1;i<n;i++){
+           ans = solve(s);
+          s=ans;
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
-        int[] arr1 = { 1, 2, 5, 8 };
-        int[] arr2 = { 0, 3, 6, 7, 9 };
-
-        merge(arr1, arr2, arr1.length, arr2.length);
-
-        for (int ele : arr1) {
-            System.out.print(ele + " ");
-        }
-
-        for (int ele : arr2) {
-            System.out.print(ele + " ");
-        }
+       int n = 4;
+      
+        ShoutOutLoud(n);
+       
     }
 }

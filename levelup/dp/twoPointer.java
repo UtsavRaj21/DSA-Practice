@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class basic {
+public class twoPointer {
     /*
      * 1.faith 2.recursive tree 3.recursion code 4.memorization 5.observation
      * 6.tabulation 7.optimization
@@ -8,6 +8,13 @@ public class basic {
 
     public static void display(int[] dp) {
         for (int ele : dp) {
+            System.out.print(ele + " ");
+        }
+        System.out.println();
+    }
+
+    public static void displayLong(long[] dp) {
+        for (long ele : dp) {
             System.out.print(ele + " ");
         }
         System.out.println();
@@ -424,7 +431,7 @@ public class basic {
         // display(dp);
     }
 
-    // 91. Decode Ways
+    // 91.
 
     // Backward
     public static int numDecodings_memo1(String s, int idx, int[] dp) {
@@ -481,28 +488,24 @@ public class basic {
     }
 
     // Front
-    public static int numDecodings_memo2(String s, int idx, int[] dp) {
-        if (idx == s.length() - 1) {
+    public static int numDecodings_memo(String s, int idx, int[] dp) {
+        if (idx == s.length()) {
             return dp[idx] = 1;
         }
 
-        if (dp[idx - 1] != -1) {
+        if (dp[idx] != -1) {
             return dp[idx];
         }
 
-        if (s.charAt(idx - 1) == '0') {
-            return dp[idx] = 0;
-        }
-
         int count = 0;
-        if (s.charAt(idx - 1) > '0') {
-            count += numDecodings_memo2(s, idx - 1, dp);
+        if (s.charAt(idx) > '0') {
+            count += numDecodings_memo(s, idx + 1, dp);
         }
 
-        if (idx > 1) {
-            int num = (s.charAt(idx - 2) - '0') * 10 + (s.charAt(idx - 1) - '0');
+        if (idx < s.length() - 1) {
+            int num = (s.charAt(idx) - '0') * 10 + (s.charAt(idx + 1) - '0');
             if (num <= 26 && num >= 10) {
-                count += numDecodings_memo2(s, idx - 2, dp);
+                count += numDecodings_memo(s, idx + 2, dp);
             }
         }
         return dp[idx] = count;
@@ -601,44 +604,39 @@ public class basic {
                 continue;
             }
 
-            if (dp[idx] != -1) {
-                 dp[idx];
-                 continue;
-            }
-
             if (s.charAt(idx) == '0') {
-                 dp[idx] = 0;
-                 continue;
+                dp[idx] = 0;
+                continue;
             }
 
             long count = 0;
             int mod = (int) 1e9 + 7;
             char ch = s.charAt(idx);
             if (ch == '*') {
-                count = (count + 9 * dp[idx+1]) % mod; //numDecodingsStar_memo(s, idx + 1, dp)
+                count = (count + 9 * dp[idx + 1]) % mod; // numDecodingsStar_memo(s, idx + 1, dp)
 
                 if (idx < s.length() - 1) { // **,*c.
                     if (s.charAt(idx + 1) == '*') {
-                        count = (count + 15 * dp[idx+2]) % mod;
+                        count = (count + 15 * dp[idx + 2]) % mod;
                     } else if (s.charAt(idx + 1) >= '0' && s.charAt(idx + 1) <= '6') {
-                        count = (count + 2 *dp[idx+2]) % mod;
+                        count = (count + 2 * dp[idx + 2]) % mod;
                     } else if (s.charAt(idx + 1) >= '7') {
-                        count = (count + dp[idx+2]) % mod;
+                        count = (count + dp[idx + 2]) % mod;
                     }
                 }
             } else {
-                count = (count +dp[idx+1]) % mod;
+                count = (count + dp[idx + 1]) % mod;
                 if (idx < s.length() - 1) {
                     if (s.charAt(idx + 1) != '*') {
                         int num = (s.charAt(idx) - '0') * 10 + (s.charAt(idx + 1) - '0');
                         if (num <= 26) {
-                            count = (count + dp[idx+2]) % mod;
+                            count = (count + dp[idx + 2]) % mod;
                         }
                     } else {
                         if (ch == '1') {
-                            count = (count + 9 *dp[idx+2]) % mod;
+                            count = (count + 9 * dp[idx + 2]) % mod;
                         } else if (ch == '2') {
-                            count = (count + 6 * dp[idx+2]) % mod;
+                            count = (count + 6 * dp[idx + 2]) % mod;
                         }
                     }
                 }
@@ -649,17 +647,247 @@ public class basic {
         return dp[IDX];
     }
 
-    public int numDecodingsStar(String s) {
+    public static long numDecodingsStar_opti(String s) {
+        if (s.length() == 0)
+            return 0;
+
+        long a = 0, b = 0;
+        int mod = (int) 1e9 + 7;
+        System.out.print(a + " ");
+        for (int i = s.length(); i >= 0; i--) {
+            if (i == s.length()) {
+                a = 1;
+                b = 0;
+                continue;
+            }
+
+            if (s.charAt(i) == '0') {
+                b = a;
+                a = 0;
+                continue;
+            }
+            char ch = s.charAt(i);
+            long count = 0;
+            if (ch == '*') {
+                count = (count + 9 * a) % mod;
+                if (i < s.length() - 1) {
+                    if (s.charAt(i + 1) == '*') {
+                        count = (count + 15 * b) % mod;
+                    } else if (s.charAt(i + 1) >= '0' && s.charAt(i + 1) <= '6') {
+                        count = (count + 2 * b) % mod;
+                    } else if (s.charAt(i + 1) >= '7') {
+                        count = (count + b) % mod;
+                    }
+                }
+            } else {
+                count = (count + a) % mod;
+                if (i < s.length() - 1) {
+                    if (s.charAt(i + 1) != '*') {
+                        int num = (s.charAt(i) - '0') * 10 + (s.charAt(i + 1) - '0');
+                        if (num <= 26) {
+                            count = (count + b) % mod;
+                        }
+                    } else {
+                        if (ch == '1') {
+                            count = (count + 9 * b) % mod;
+                        } else if (ch == '2') {
+                            count = (count + 6 * b) % mod;
+                        }
+                    }
+                }
+            }
+            b = a;
+            a = count;
+            System.out.print(a + " ");
+        }
+        System.out.println();
+        return a;
+    }
+
+    public static void numDecodingsStar(String s) {
         long[] dp = new long[s.length() + 1];
         Arrays.fill(dp, -1);
         // return (int) numDecodingsStar_memo(s, 0, dp);
-        return (int) numDecodingsStar_tabu(s, 0, dp);
+        // int ans= (int) numDecodingsStar_tabu(s, 0, dp);
+        int ans = (int) numDecodingsStar_opti(s);
+        // displayLong(dp);
+        System.out.println(ans);
     }
+
+    // friends Pairing
+
+    public static long friendsPairing_memo(int n, long[] dp) {
+        int mod = (int) 1e9 + 7;
+
+        if (n <= 1) {
+            return dp[n] = 1;
+
+        }
+
+        long single = friendsPairing_memo(n - 1, dp);
+        long pairup = friendsPairing_memo(n - 2, dp) * (n - 1);
+
+        return dp[n] = (single + pairup % mod) % mod;
+
+    }
+
+    public static long friendsPairing_tabu(int N, long[] dp) {
+        int mod = (int) 1e9 + 7;
+        for (int n = 0; n <= N; n++) {
+            if (n <= 1) {
+                dp[n] = 1;
+                continue;
+            }
+
+            long single = dp[n - 1];
+            long pairup = dp[n - 2] * (n - 1);
+
+            dp[n] = (single + pairup % mod) % mod;
+        }
+
+        return dp[N];
+    }
+
+    public static long friendsPairing_opti(int n) {
+        int mod = (int) 1e9 + 7;
+        long a = 1, b = 1;
+        for (int i = 2; i <= n; i++) {
+            long sum = (b + a * (i - 1) % mod) % mod;
+            a = b;
+            b = sum;
+        }
+
+        return b;
+    }
+
+    public long countFriendsPairings(int n) {
+        long[] dp = new long[n + 1];
+        // return friendsPairing_opti(n, dp);
+        // return friendsPairing_tabu(n, dp);
+        return friendsPairing_opti(n);
+    }
+
+    // Count the number of ways to divide N in k groups incrementally :- https://www.geeksforgeeks.org/count-the-number-of-ways-to-divide-n-in-k-groups-incrementally/
+    
+
+    static int calculate(int pos, int prev, int left, int k,int[][][] dp) {
+        // Base Case
+        if (pos == k) {
+            if (left == 0)
+                return 1;
+            else
+                return 0;
+        }
+
+        if (left == 0)
+            return 0;
+
+        if (dp[pos][prev][left] != -1)
+            return dp[pos][prev][left];
+
+        int answer = 0;
+
+        for (int i = prev; i <= left; i++) {
+            answer += calculate(pos + 1, i, left - i, k,dp);
+        }
+
+        return dp[pos][prev][left] = answer;
+    }
+
+    static int countWaystoDivide(int n, int k) {
+        // Initialize DP Table as -1
+        int[][][] dp = new int[500][500][500];
+        for (int i = 0; i < 500; i++) {
+            for (int j = 0; j < 500; j++) {
+                for (int l = 0; l < 500; l++)
+                    dp[i][j][l] = -1;
+            }
+        }
+
+        return calculate(0, 1, n, k,dp);
+    }
+
+    public static int divideInGroup_memo(int n,int k,int[][] dp){
+
+        if(k==1 || k==n){
+            return dp[n][k] = 1;
+        }
+
+        if(dp[n][k] !=-1){
+            return dp[n][k];
+        }
+        int selfSet = divideInGroup_memo(n-1, k-1, dp);
+        int otherSet = divideInGroup_memo(n-1, k, dp) * k;
+
+        return dp[n][k] = selfSet + otherSet;
+    }
+
+    public static int divideInGroup_tabu(int N,int K,int[][] dp){
+        for(int n=1 ; n<= N ; n++){
+            for(int k=1 ; k<=K;k++){
+                if(k>n) break;
+                if(k==1 || k==n){
+                   dp[n][k] = 1;
+                   continue;
+                }
+
+                int selfSet = dp[n-1][k-1];//divideInGroup_memo(n-1, k-1, dp);
+                int otherSet = dp[n-1][k] * k;//divideInGroup_memo(n-1, k, dp) * k;
+                
+                dp[n][k] = selfSet + otherSet;
+            }
+        }
+       
+
+        return dp[N][K] ;
+    }
+    
+    public static int divideInGroup(){
+        int n=8,k=5;
+        int[][] dp = new int[n+1][k+1];
+        for(int[] d:dp) Arrays.fill(d,0);
+         //int ans= divideInGroup_memo(n, k, dp);
+         int ans= divideInGroup_tabu(n, k, dp);
+         display2D(dp);
+         return ans;
+        
+    }
+    //====================================================================================
+    
+    //Mobile numeric keypad
+
+    //public static long getCount_memo()
+
+    // public static long getCount(int n)
+	// {
+	// 	if(n==0){
+    //         return 0;
+    //     }
+
+    //     for(int i=0;i<4;i++){
+    //         for(int j=0;j<3;j++){
+    //             if((i!=3 && j!=0) && (i!=3 && j!=2) ){
+
+    //             }
+    //         }
+    //     }
+
+    //     return getCount_memo(n);
+	// }
 
     public static void main(String[] args) {
         // mazePath_Set();
         // board_path() ;
 
-        System.out.println(numDecodings("07"));
+        // System.out.println(numDecodings("07"));
+        //numDecodingsStar("4*");
+
+        // int N = 5;
+        // int K = 3;
+     
+        // System.out.print(countWaystoDivide(N, K));
+
+        System.out.print(divideInGroup());
+        //System.out.print(getCount(2));
     }
 }

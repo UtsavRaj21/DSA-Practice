@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class l001Basic {
+public class basic1{
     public static void print(int[] arr) {
         for (int ele : arr)
             System.out.print(ele + " ");
@@ -215,7 +215,7 @@ public class l001Basic {
         int[] dp = new int[n + 1];
         // System.out.println(boardPath_memo(n, dp));
         System.out.println(boardPath_dp(n, dp));
-        System.out.println(boardPath_Opti(n));
+        //System.out.println(boardPath_Opti(n));
 
         print(dp);
     }
@@ -329,6 +329,6 @@ public class l001Basic {
     }
 
     public static void main(String[] args) {
-        mazePath();
+        boardPath();
     }
 }
