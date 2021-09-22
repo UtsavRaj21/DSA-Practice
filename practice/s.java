@@ -1,29 +1,33 @@
-import java.util.*; 
+import java.util.*;
 import java.io.*;
-public class s{
-    
-    public static int solve(int n,int[][] arr){
-      int x = arr[0][0];
-      int y = arr[0][1];
-      int level =1;
 
-      for(int i=1;i<n;i++){
-        if(y<arr[i][0]){
-          level++;
-          x=arr[i][0];
-          y=arr[i][1];
+public class s {
+  public static int maxLength(int n,int[] a,int[] b) {
+    int sum =0;
+    for(int i=0;i<n;i++){
+      int x = b[i];
+      if(x <= a[i]){
+        sum += x;
+      }else{
+        sum+=a[i];
+        int y = x-a[i];
+        if(y <= a[i+1]){
+          sum+=y;
+          a[i+1] = a[i+1] - y;
+        }else{
+          sum+=a[i+1];
+          a[i+1] = 0;
         }
       }
-
-      return level;
     }
-      public static void main (String[] args) {  
-       int n=3;
-       int[][] arr = {{1,3},{2,4},{5,7}};
-       System.out.println(solve(n,arr) );
-       
-        
 
-        
-      }
+    return sum;
+  }
+
+  public static void main(String[] args) {
+    int[] a = {6,1,1};
+    int[] b={1,8};
+    int ans = maxLength(2,a,b);
+    System.out.println(ans);
+  }
 }

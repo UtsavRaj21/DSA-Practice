@@ -1,5 +1,7 @@
 import java.util.*;
 
+import org.graalvm.compiler.hotspot.nodes.FastAcquireBiasedLockNode;
+
 public class faang {
 
     public class Edge {
@@ -140,100 +142,174 @@ public class faang {
         return -1;
     }
 
-    //Eulerian Path in an Undirected Graph
-   
-    public static int eulerPath(int N, int graph[][]){       // (n-2) even indegree , (2)odd indegree
+    // Eulerian Path in an Undirected Graph
+
+    public static int eulerPath(int N, int graph[][]) { // (n-2) even indegree , (2)odd indegree
         int[] arr = new int[N];
-        for(int i=0;i<graph.length;i++){
-            for(int j=0;j<graph[0].length;j++){
-                if(graph[i][j] == 1){
+        for (int i = 0; i < graph.length; i++) {
+            for (int j = 0; j < graph[0].length; j++) {
+                if (graph[i][j] == 1) {
                     arr[i]++;
-                    
+
                 }
-               
+
             }
         }
-        
+
         int even = 0;
         int odd = 0;
-        for(int ele : arr){
-            if(ele % 2 == 0){
+        for (int ele : arr) {
+            if (ele % 2 == 0) {
                 even++;
-            }else{
+            } else {
                 odd++;
             }
         }
-        
-        if(odd == 2){
+
+        if (odd == 2) {
             return 1;
         }
-        
+
         return 0;
     }
-    
-    //Euler Circuit in an Undirected Graph
 
-    public boolean isEularCircuitExist(int V, ArrayList<ArrayList<Integer>> adj)  // even indegree
+    // Euler Circuit in an Undirected Graph
+
+    public boolean isEularCircuitExist(int V, ArrayList<ArrayList<Integer>> adj) // even indegree
     {
         int[] arr = new int[V];
-        for(ArrayList<Integer> a : adj){
-            for(Integer ele : a){
+        for (ArrayList<Integer> a : adj) {
+            for (Integer ele : a) {
                 arr[ele]++;
             }
-           
+
         }
-        
-        for(int ele : arr){
-            if(ele %2 !=0){
+
+        for (int ele : arr) {
+            if (ele % 2 != 0) {
                 return false;
             }
         }
         return true;
     }
-    
-    public static String similarity(String str ,int i,int j){
+
+    public static String similarity(String str, int i, int j) {
         StringBuilder sb = new StringBuilder(str);
         char ch1 = str.charAt(i);
         char ch2 = str.charAt(j);
-        sb.setCharAt(i,ch2);
-        sb.setCharAt(j,ch1);
+        sb.setCharAt(i, ch2);
+        sb.setCharAt(j, ch1);
 
         return sb.toString();
     }
+
     public static int kSimilarity(String s1, String s2) {
-        if(s1.equals(s2)) return 0;
-        
+        if (s1.equals(s2))
+            return 0;
+
         LinkedList<String> que = new LinkedList<>();
         que.add(s1);
         HashSet<String> set = new HashSet<>();
         set.add(s1);
-        int level =0;
-        while(que.size()!=0){
+        int level = 0;
+        while (que.size() != 0) {
             int s = que.size();
-            while(s-->0){
+            while (s-- > 0) {
                 String rstr = que.removeFirst();
-                    for(int i=0;i<rstr.length();i++){
-                        for(int j =i+1;j<rstr.length();j++){
-                            String nstr = similarity(rstr,i,j);
-                          
-                            if(nstr.equals(s2)){
-                                return level+1;
-                            }
-                            if(!set.contains(nstr)){
-                                set.add(nstr);
-                                que.addLast(nstr);
-                            }
+                for (int i = 0; i < rstr.length(); i++) {
+                    for (int j = i + 1; j < rstr.length(); j++) {
+                        String nstr = similarity(rstr, i, j);
+
+                        if (nstr.equals(s2)) {
+                            return level + 1;
+                        }
+                        if (!set.contains(nstr)) {
+                            set.add(nstr);
+                            que.addLast(nstr);
                         }
                     }
                 }
+            }
             level++;
         }
         return 0;
     }
 
+    // 934. Shortest Bridge
+
+    public int shortestBridge(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        LinkedList<Integer> que = new LinkedList<>();
+        LinkedList<Integer> Mainque = new LinkedList<>();
+        boolean[][] vis = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    int idx = i * n + j;
+                    que.add(idx);
+                    vis[i][j] = true;
+                    break;
+                }
+            }
+            if (que.size() > 0) {
+                break;
+            }
+        }
+
+        int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        while (que.size() > 0) {
+            int rNo = que.removeFirst();
+            int sr = rNo / m;
+            int sc = rNo % m;
+            Mainque.add(rNo);
+            for (int d = 0; d < dir.length; d++) {
+                int r = sr + dir[d][0];
+                int c = sc + dir[d][1];
+
+                if (r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 1 && !vis[r][c]) {
+                    vis[r][c] = true;
+                    que.add(r * n + c);
+                }
+
+            }
+        }
+
+        int level = 0;
+        while (Mainque.size() > 0) {
+            int s = Mainque.size();
+            System.out.print(level + "  ");
+            while (s-- > 0) {
+                int rNo = Mainque.removeFirst();
+                int sr = rNo / m;
+                int sc = rNo % m;
+                for (int d = 0; d < dir.length; d++) {
+                    int r = sr + dir[d][0];
+                    int c = sc + dir[d][1];
+
+                    if (r >= 0 && c >= 0 && r < n && c < m && !vis[r][c]) {
+                        vis[r][c] = true;
+                        if (grid[r][c] == 1) {
+                            return level;
+                        } else {
+                            Mainque.add(r * n + c);
+                        }
+
+                    }
+
+                }
+            }
+            level++;
+        }
+
+        return -1;
+    }
+
+    
 
     public static void main(String[] args) {
         String s1 = "abcdeabcdeabcdeabcde", s2 = "aaaabbbbccccddddeeee";
-        System.out.println(kSimilarity(s1,s2));
+        System.out.println(kSimilarity(s1, s2));
     }
 }
