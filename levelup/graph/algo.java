@@ -1,8 +1,8 @@
 import java.util.*;
 
-import basic.Edge;
 
 public class algo {
+    
     public static class Edge {
         int v = 0, w = 0;
 

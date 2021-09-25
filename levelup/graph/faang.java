@@ -1,7 +1,5 @@
 import java.util.*;
 
-import org.graalvm.compiler.hotspot.nodes.FastAcquireBiasedLockNode;
-
 public class faang {
 
     public class Edge {
@@ -235,6 +233,34 @@ public class faang {
         return 0;
     }
 
+    // 332. Reconstruct Itinerary :- Euler Circuit in an directed Graph
+    static HashMap<String, PriorityQueue<String>> graph;
+    static LinkedList<String> ans;
+
+    public static List<String> findItinerary(List<List<String>> tickets) {
+        graph = new HashMap<>();
+        ans = new LinkedList<>();
+
+        for (List<String> ticket : tickets) {
+            PriorityQueue<String> temp = graph.getOrDefault(ticket.get(0), new PriorityQueue<String>());
+            temp.add(ticket.get(1));
+            graph.put(ticket.get(0), temp);
+        }
+
+        dfs("JFK");
+        return ans;
+    }
+
+    public static void dfs(String str) {
+        PriorityQueue<String> rque = graph.get(str);
+
+        while (rque != null && rque.size() > 0) {
+            String s = rque.remove();
+            dfs(s);
+        }
+        ans.addFirst(str);
+    }
+
     // 934. Shortest Bridge
 
     public int shortestBridge(int[][] grid) {
@@ -306,7 +332,118 @@ public class faang {
         return -1;
     }
 
-    
+    // Find the Maximum Flow
+
+    static int sum = 0;
+
+    public static int solve(int N, int M, ArrayList<ArrayList<Integer>> Edges) {
+        ArrayList<Edge>[] graph = new ArrayList[N + 1];
+        for (int i = 0; i < N + 1; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (ArrayList<Integer> l : Edges) {
+            graph[l.get(0)].add(new Edge(l.get(1), l.get(2)));
+            graph[l.get(1)].add(new Edge(l.get(0), l.get(2)));
+        }
+
+        boolean[] vis = new boolean[N + 1];
+
+        forOne(graph, 1, N, vis);
+    }
+
+    public static void forOne(ArrayList<Edge>[] graph, int src, int tar, boolean[] vis) {
+        boolean flag = false;
+        for (Edge e : graph[src]) {
+            int min = (int) 1e9;
+            int v = e.v, w = e.w;
+            if (w > 0) {
+                int m = dfs(graph, v, tar, vis, min);
+
+                if (m != ((int) 1e9)) {
+                    e.w = e.w - m;
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        if (flag) {
+            forOne(graph, 1, tar, vis);
+        }
+    }
+
+    public static int dfs(ArrayList<Edge>[] graph, int src, int tar, boolean[] vis, int min) {
+        if (src == tar) {
+            sum += min;
+            return min;
+        }
+        boolean flag = false;
+        vis[src] = true;
+        int m = (int) 1e9;
+        for (Edge e : graph[src]) {
+            if (!vis[e.v] && e.w > 0) {
+                m = dfs(graph, e.v, tar, vis, min);
+                if (m != ((int) 1e9)) {
+                    e.w = e.w - m;
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        vis[src] = false;
+        return m;
+    }
+
+    // 947. Most Stones Removed with Same Row or Column
+
+    static int[] par;
+    static int[] size;
+
+    public static int parFind(int src) {
+        if (par[src] == src) {
+            return src;
+        }
+
+        return par[src] = parFind(par[src]);
+    }
+
+    public static void union(int p1, int p2) {
+        if (size[p1] < size[p2]) {
+            par[p1] = p2;
+            size[p2] += size[p1];
+        } else {
+            par[p2] = p1;
+            size[p1] += size[p2];
+        }
+
+    }
+
+    public static int removeStones(int[][] stones) {
+        int n = stones.length, m = stones[0].length;
+        par = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++) {
+            par[i] = i;
+            size[i] = 0;
+        }
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1]) {
+                    int p1 = parFind(i);
+                    int p2 = parFind(j);
+                    if (p1 != p2) {
+                        union(p1, p2);
+                        count++;
+                    }
+
+                }
+            }
+        }
+
+        return count;
+    }
 
     public static void main(String[] args) {
         String s1 = "abcdeabcdeabcdeabcde", s2 = "aaaabbbbccccddddeeee";
