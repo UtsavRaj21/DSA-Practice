@@ -2,44 +2,32 @@ import java.util.*;
 
 public class p1 {
 
-    public static String solve(String num){
+    public static String find(int key , String str){
         StringBuilder sb = new StringBuilder();
-        int c=1;
-        char prev = num.charAt(0);
-        for(int i = 1; i<num.length();i++){
-            char ch = num.charAt(i);
-            if(ch==prev){
-                c++;
-            }else{
+        for(int i = 0 ; i < str.length();i++){
+            char ch = str.charAt(i);
+            if(ch >= 'a' && ch <= 'z'){
+                char c = (char)(ch + key);
                 sb.append(c);
-                sb.append(prev);
-                prev = ch;
-                c=1;
+            }else if(ch >= 'A' && ch <= 'Z'){
+                char c = (char)(ch  + key);
+                sb.append(c);
+            }else{
+                char c = (char)(ch  + key);
+                sb.append(c);
             }
-        }
-
-        if(c>0){
-            sb.append(c);
-            sb.append(prev);
         }
 
         return sb.toString();
     }
 
-    static String ShoutOutLoud(int n){
-        String s=Integer.toString(1);
-        String ans = "1";
-        for(int i = 1;i<n;i++){
-           ans = solve(s);
-          s=ans;
-        }
-        return ans;
-    }
-
     public static void main(String[] args) {
-       int n = 4;
-      
-        ShoutOutLoud(n);
+     
+        int k = 3;
+        String str = "as3gAsd";
+        String ans = find(k,str);
+        System.out.println(ans);
+
        
     }
 }
