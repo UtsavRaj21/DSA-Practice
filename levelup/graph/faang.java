@@ -2,7 +2,7 @@ import java.util.*;
 
 public class faang {
 
-    public class Edge {
+    public static class Edge {
         int v = 0;
         int w = 0;
 
@@ -10,6 +10,7 @@ public class faang {
             this.v = v;
             this.w = w;
         }
+
     }
 
     // 127. Word Ladder :- https://leetcode.com/problems/word-ladder/submissions/
@@ -336,7 +337,7 @@ public class faang {
 
     static int sum = 0;
 
-    public static int solve(int N, int M, ArrayList<ArrayList<Integer>> Edges) {
+    public static void solve(int N, int M, ArrayList<ArrayList<Integer>> Edges) {
         ArrayList<Edge>[] graph = new ArrayList[N + 1];
         for (int i = 0; i < N + 1; i++) {
             graph[i] = new ArrayList<>();
@@ -445,8 +446,128 @@ public class faang {
         return count;
     }
 
+    // 1034. Coloring A Border
+
+    public static void dfs(int[][] grid, int row, int col, int clr, int[][] dir) {
+        grid[row][col] = -clr;
+        int count = 0;
+        for (int d = 0; d < dir.length; d++) {
+            int r = row + dir[d][0];
+            int c = col + dir[d][1];
+
+            if (r >= 0 && c >= 0 && r < grid.length && c < grid[0].length && Math.abs(grid[r][c]) == clr) {
+                count++;
+                if (grid[r][c] == clr) {
+                    dfs(grid, r, c, clr, dir);
+                }
+
+            }
+
+            if (count == 4) {
+                grid[row][col] = clr;
+            }
+        }
+    }
+
+    public static int[][] colorBorder(int[][] grid, int row, int col, int color) {
+        int num = grid[row][col];
+        int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        dfs(grid, row, col, num, dir);
+
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (grid[r][c] < 0) {
+                    grid[r][c] = color;
+                }
+            }
+        }
+
+        return grid;
+    }
+
+    //Vertices and edges :- https://www.hackerearth.com/practice/algorithms/graphs/shortest-path-algorithms/practice-problems/algorithm/allsomenone-78013449/
+
+    public static class Pair{
+        int vtx;
+        int wsf;
+        StringBuilder str;
+
+        Pair(int vtx,int wsf,StringBuilder str){
+            this.vtx = vtx;
+            this.wsf = wsf;
+            this.str = str;
+        }
+
+    }
+    public static void Vertices_and_edges(ArrayList<Edge>[] graph,int src,int des){
+       
+        PriorityQueue<Pair> que = new PriorityQueue<>((a,b)->{
+            return a.wsf-b.wsf;
+        });
+        StringBuilder sb  = new StringBuilder();
+
+        que.add(new Pair(1, 0,sb));
+        boolean[] vis = new boolean[des+1];
+        String s= "";
+
+        while(que.size()>0){
+            Pair rPair = que.remove();
+            int vtx = rPair.vtx;
+            int wsf = rPair.wsf;
+            if(vtx == des){
+                s = rPair.str.append(des).toString();
+                break;
+            }
+            if(vis[vtx]) continue;
+            vis[vtx] = true;
+
+            for(Edge e : graph[vtx]){
+                if(!vis[e.v]){
+                    que.add(new Pair(e.v, wsf + e.w,rPair.str.append(vtx+" ")));
+                }
+            }
+        }
+
+        String[] arr = new String[des+1];
+        Arrays.fill(arr,"none");
+        String[] a = s.split(" ");
+
+        for(String ss : a){
+            arr[Integer.parseInt(ss)] = "all";
+        }
+
+        for(int i = 1 ; i< arr.length ; i++){
+            System.out.println(arr[i]);
+        }
+    }
     public static void main(String[] args) {
-        String s1 = "abcdeabcdeabcdeabcde", s2 = "aaaabbbbccccddddeeee";
-        System.out.println(kSimilarity(s1, s2));
+        // String s1 = "abcdeabcdeabcdeabcde", s2 = "aaaabbbbccccddddeeee";
+        // System.out.println(kSimilarity(s1, s2));
+
+        Scanner scn = new Scanner(System.in);
+        String st = scn.nextLine();
+        String[] ar = st.split(" ");
+        int n = Integer.parseInt(ar[0]);
+        int e = Integer.parseInt(ar[1]);
+
+        ArrayList<Edge>[] graph = new ArrayList[n+1];
+
+        for(int i =0 ;i<n+1;i++){
+            graph[i] = new ArrayList<Edge>();
+        }
+
+        for(int i = 0 ; i < e ; i++){
+            String s = scn.nextLine();
+            String[] arr = s.split(" ");
+            int u = Integer.parseInt(arr[0]);
+            int v = Integer.parseInt(arr[1]);
+            int w = Integer.parseInt(arr[2]);
+
+            graph[u].add(new Edge(v,w));
+            graph[v].add(new Edge(u,w));
+        }
+
+        Vertices_and_edges(graph,1,n);
     }
 }
