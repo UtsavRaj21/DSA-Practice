@@ -1,4 +1,5 @@
 public class StatckQueueUsingLL{
+    
     public static class linkedlist{
         public class Node{
             int data = 0;

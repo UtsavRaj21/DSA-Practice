@@ -2,6 +2,7 @@ import java.util.*;
 import java.util.LinkedList;
 
 public class view {
+
     public static class TreeNode {
         int val = 0;
         TreeNode left = null;
@@ -226,7 +227,7 @@ public class view {
         }
     }
     
-     public static void diagonal_1(TreeNode root)
+    public static void diagonal_1(TreeNode root)
       {
         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
            if(root == null) return ;
@@ -266,7 +267,7 @@ public class view {
         }
       }
 
-      public static void diagonal_2(TreeNode root)
+    public static void diagonal_2(TreeNode root)
       {
         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
            if(root == null) return ;
@@ -296,7 +297,7 @@ public class view {
         }
       }
 
-      public static void diagonal_2AntiClock(TreeNode root) {
+    public static void diagonal_2AntiClock(TreeNode root) {
         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
              if(root == null) return ;
   
@@ -325,8 +326,7 @@ public class view {
           }
       }
 
-
-      public static void verticalSumOrder(TreeNode root){
+    public static void verticalSumOrder(TreeNode root){
         if(root == null) return;
 
         int[] minmax = new int[2];
@@ -490,10 +490,10 @@ public class view {
                 ans.get(vl).add(rNode.val);
 
                 if(rNode.left != null){
-                    que.add(new vPair(rNode.left,vl-1));
+                    child.add(new vPair(rNode.left,vl-1));
                 }
                 if(rNode.right != null){
-                    que.add(new vPair(rNode.right,vl+1));
+                    child.add(new vPair(rNode.right,vl+1));
                 }
             }
 

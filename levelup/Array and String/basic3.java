@@ -239,7 +239,7 @@ public class basic3 {
         }
     }
 
-    public String pushDominoes(String dominoes) {                                            
+    public String pushDominoes(String dominoes) {
         int n = dominoes.length();
         char[] arr = new char[n + 2];
         arr[0] = 'L';
@@ -259,10 +259,10 @@ public class basic3 {
                 j++;
             }
 
-            if(j-i>1){
+            if (j - i > 1) {
                 solveConfig(arr, i, j);
             }
-            
+
             i = j;
             j = j + 1;
 
@@ -272,6 +272,200 @@ public class basic3 {
             str.append(arr[k]);
         }
         return str.toString();
+    }
+
+    // 829. Consecutive Numbers Sum :-
+    // https://leetcode.com/problems/consecutive-numbers-sum/
+
+    public int consecutiveNumbersSum(int n) {
+        int count = 0;
+        for (int k = 1; k * (k - 1) < 2 * n; k++) {
+            int numerator = (n - (k - 1)) / 2 * k;
+            if (numerator % 2 == 0) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    // Add String : Portal
+
+    public static String addStrings(String num1, String num2) {
+        // write your code here
+    }
+
+    // Multify String : Portal
+
+    public static String multiplication(String num1, String num2) {
+        // write your code here
+    }
+
+    // 42. Trapping Rain Water :- https://leetcode.com/problems/trapping-rain-water/
+
+    public int trap(int[] height) {
+
+    }
+
+    //239. Sliding Window Maximum :- https://leetcode.com/problems/sliding-window-maximum/
+    
+    public int[] ngre(int[] arr){
+        int[] ngr = new int[arr.length];
+        Stack<Integer> st = new Stack<Integer>();
+             // st.push(0);
+        for(int i = 0 ; i < arr.length;i++){
+            while(st.size() > 0 && arr[i] > arr[st.peek()]){
+                ngr[st.pop()] = i;
+            }
+            st.push(i);
+        }
+
+        while(st.size() >0){
+            ngr[st.pop()] = arr.length;
+        }
+
+        return ngr;
+    }
+    
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] ngr = ngre(nums);
+        int[] res = new int[n-k+1];
+        for(int ele : ngr){
+            System.out.print(ele+" ");
+        }
+        int j=0;
+
+        for(int i = 0 ; i < res.length ; i++){
+            if(j<i)j++;
+
+            while(ngr[j] < i+k){
+                j=ngr[j];
+            }
+            res[i] = nums[j];
+        }
+
+        return res;
+    }
+
+    public class Interval {
+        int start;
+        int end;
+        public Interval(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+    // meeting rooms lintcode 920. https://www.lintcode.com/problem/920/
+    public boolean canAttendMeetings(List<Interval> intervals) {
+        if(intervals.size() == 0) return true;
+        Collections.sort(intervals,( Interval a, Interval b)->{
+        return a.start - b.start;
+    });
+
+    int end = intervals.get(0).end;
+
+    for(int i = 1 ; i < intervals.size();i++){
+        int st = intervals.get(i).start;
+        if(st < end){
+            return false;
+        }else{
+            end = intervals.get(i).end;
+        }
+
+    }
+    return true;
+    }
+
+    // meeting rooms 2 lintcode 919. https://www.lintcode.com/problem/919/
+    public int minMeetingRooms(List<Interval> intervals) {
+        int n = intervals.size();
+        int[] start = new int[n];
+        int[] end = new int[n];
+        for(int i =0;i<n;i++){
+            start[i] = intervals.get(i).start;
+            end[i] = intervals.get(i).end;
+        }
+
+        int max = 0;
+        int rooms=0;
+        int i=0;
+        int j =0;
+        while(i<n){
+            if(start[i] <= end[j]){
+                rooms++;
+                i++;
+            }else{
+              rooms--;
+                j++;
+            }
+            max = Math.max(max, rooms);
+        }
+        return max;
+    }
+
+
+    // leetcode 56. https://leetcode.com/problems/merge-intervals/
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,(a , b)->
+            Integer.compare(a[0], b[0])
+        );
+
+        ArrayList<int[]> ans = new ArrayList<>();
+        int start1 = intervals[0][0];
+        int end1 = intervals[0][1];
+
+        for(int i = 1 ; i < intervals.length;i++){
+            int start2= intervals[i][0];
+            int end2 =  intervals[i][1];
+
+            if(start2 > end1){
+                ans.add(new int[]{start1,end1});
+                start1 = start2;
+                end1 = end2;
+            }else{
+                end1 = Math.max(end1, end2);
+            }
+        }
+
+        ans.add(new int[]{start1,end1});
+
+        // int[][] res = new int[ans.size()][2];
+        // for(int i = 0 ; i < ans.size();i++){
+        //     res[i][0] = ans.get(i)[0];
+        //     res[i][1] = ans.get(i)[1];
+        // }
+
+        // return res;
+        return ans.toArray(new int[ans.size()][]);
+    }
+
+    // leetcode 986. https://leetcode.com/problems/interval-list-intersections/
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+        ArrayList<int[]> ans = new ArrayList<>();
+        int i =0; 
+        int j =0;
+
+        while(i < firstList.length && j < secondList.length){
+            int st = Math.max(firstList[i][0],secondList[j][0]);
+            int end = Math.min(firstList[i][1],secondList[j][1]);
+
+            if(st <= end){
+                ans.add(new int[]{st,end});
+            }
+
+            if(firstList[i][1] < secondList[j][1]){
+                i++;
+            }else{
+                j++;
+            }
+        }
+        return ans.toArray(new int[ans.size()][]);
+    }
+
+    // leetcode 57. https://leetcode.com/problems/insert-interval/
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        //H.W
     }
 
     public static void main(String[] args) {
