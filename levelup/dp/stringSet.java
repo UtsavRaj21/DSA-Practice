@@ -640,6 +640,7 @@ public class stringSet {
         return Match2(s, p, n, m, dp) == 1;
     }
 
+    
     public static void main(String[] args) {
         //longestPalindromeSubseq("abcchcbj"); 
          //System.out.println( longestCommonSubsequence("abcde", "ace"));

@@ -292,7 +292,10 @@ public class basic3 {
     // Add String : Portal
 
     public static String addStrings(String num1, String num2) {
-        // write your code here
+        int n = num1.length(),m=num2.length();
+        int carry = 0;
+        int i=n-1,j=m-1;
+        while()
     }
 
     // Multify String : Portal
@@ -304,7 +307,37 @@ public class basic3 {
     // 42. Trapping Rain Water :- https://leetcode.com/problems/trapping-rain-water/
 
     public int trap(int[] height) {
+        int flow = 0;
+        int water = 0;
+        int max = height[0];
+        int maxIndx = 0;
 
+        for(int i = 1; i < height.length; i++) {
+            int ht = height[i];
+            if(max <= ht) {
+                water += flow;
+                flow = 0;
+                max = ht;
+                maxIndx = i;
+            } else {
+                flow += (max - ht);
+            }
+        }
+
+        // solve the overflow of flow value
+        flow = 0;
+        max = height[height.length - 1];
+        for(int i = height.length - 2; i >= maxIndx; i--) {
+            int ht = height[i];
+            if(max <= ht) {
+                water += flow;
+                flow = 0;
+                max = ht;
+            } else {
+                flow += (max - ht);
+            }
+        }
+        return water;
     }
 
     //239. Sliding Window Maximum :- https://leetcode.com/problems/sliding-window-maximum/
@@ -356,6 +389,7 @@ public class basic3 {
             this.end = end;
         }
     }
+    
     // meeting rooms lintcode 920. https://www.lintcode.com/problem/920/
     public boolean canAttendMeetings(List<Interval> intervals) {
         if(intervals.size() == 0) return true;
@@ -441,6 +475,7 @@ public class basic3 {
     }
 
     // leetcode 986. https://leetcode.com/problems/interval-list-intersections/
+    
     public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
         ArrayList<int[]> ans = new ArrayList<>();
         int i =0; 

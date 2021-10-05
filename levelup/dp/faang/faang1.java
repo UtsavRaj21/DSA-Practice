@@ -112,4 +112,137 @@ public class faang1 {
        return max;
    }
 
+   //Form a palindrome :- https://practice.geeksforgeeks.org/problems/form-a-palindrome1455/1#
+   public static int countMin(String str)
+   {
+       int n = str.length();
+       int[][] dp = new int[n][n];
+       for(int[] d : dp) Arrays.fill(d,-1);
+
+       int max =1;
+        for(int gap = 0 ; gap<n;gap++){
+            for(int i = 0 ,j = gap ; j<n;i++,j++){
+                if(gap == 1){
+                    dp[i][j] = 1;
+                    
+                }
+
+                else if(gap == 1){
+                    if(str.charAt(i) == str.charAt(j)){
+                        dp[i][j] = 1;
+                    }
+                   
+                }
+
+                else if (str.charAt(i) == str.charAt(j)){
+                    if(dp[i+1][j-1] !=-1){
+                        dp[i][j] = dp[i+1][j-1] + 2;
+                    }else{
+                        dp[i][j] = 1;
+                    }
+                }else{
+
+                }
+
+                max = Math.max(max,dp[i][j]);
+            }
+       }
+
+       return str.length() - max;
+   }
+
+   //Maximum Product Cutting | DP-36
+
+   public static int maxProd(int n){
+        int dp[] = new int[n+1];
+        for(int i = 0 ; i <=n ;i++){
+            if(i==0||i==1){
+                dp[i] = 0;
+                continue;
+            }
+
+            int max_val = 0;
+
+            for(int j = 1 ; j <= i/2 ; j++){
+                max_val = Math.max(max_val, Math.max(j * (i-j) , j * dp[i-j]));
+            }
+            dp[i] = max_val;
+        }
+
+        return dp[n];
+        
+    }
+
+    //Optimal Strategy For A Game :- https://practice.geeksforgeeks.org/problems/optimal-strategy-for-a-game-1587115620/1
+
+    static long countMaximum(int arr[], int n)
+    {
+        long[][] dp = new long[n][n];
+        
+        for(int gap = 0 ; gap<n;gap++){
+            for(int i = 0 , j = gap ; j < n ; j++,i++){
+                if(gap ==0){
+                    dp[i][j] = arr[i];
+                }else if(gap == 1){
+                    dp[i][j] = Math.max(arr[i],arr[j]);
+                }else{
+                    long val1 = arr[i] + Math.min(dp[i+2][j],dp[i+1][j-1]);
+                     long val2 = arr[j] + Math.min(dp[i][j-2],dp[i+1][j-1]);
+                     
+                     dp[i][j] = Math.max(val1,val2);
+                }
+            }
+        }
+        
+        return dp[0][n-1];
+    }
+
+    //Mobile numeric keypad :- https://practice.geeksforgeeks.org/problems/mobile-numeric-keypad5456/1#
+
+    public static long getCount(int N)
+	{
+        if(N==1) return 10;
+		long[][] dp1 = new long[4][3];
+        long[][] dp2 = new long[4][3];
+        for(long[] a : dp1){
+            Arrays.fill(a,1);
+        }
+
+        dp1[3][0] = 0;
+        dp1[3][2] = 0;
+
+        int[][] dir = {{0,0},{0,1},{0,-1},{1,0},{-1,0}};
+        long sum = 0 ;
+        for(int n = 1 ; n < N ; n++){
+             sum = 0 ;
+            for(int i = 0 ; i < 4; i++){
+                for(int j = 0 ; j < 3 ; j++){
+                    if(dp1[i][j] == 0) continue;
+                    long s = 0;
+                    for(int d = 0 ; d < 5;d++){
+                        int r = i + dir[d][0];
+                        int c = j + dir[d][1];
+
+                        if( r >=0 && c>=0 && r<4 && c<3 && dp1[r][c] != 0){
+                            s+=dp1[r][c];
+                        }
+                    }
+                    dp2[i][j] = s;
+                    sum+=s;
+                }
+            }
+            for(int i = 0 ; i < 4; i++){
+                for(int j = 0 ; j < 3 ; j++){
+                    dp1[i][j] = dp2[i][j];
+                }
+            }
+        }
+        return sum;
+	}
+   
+   
+    public static void main(String[] args) {
+        //System.out.println(maxProd(4));
+        System.out.println(getCount(2));
+    }
 }

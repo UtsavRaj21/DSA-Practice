@@ -60,7 +60,7 @@ public class basic{
         System.out.println(ans.s2);
     }
 
-        public static int floodFill_helper(int sr,int sc, int er,int ec,int[][] dir, String[] s ,String ans,boolean[][] vis){
+    public static int floodFill_helper(int sr,int sc, int er,int ec,int[][] dir, String[] s ,String ans,boolean[][] vis){
             if(sc == ec && sr == er ){
                 System.out.println(ans);
                 return 1;
@@ -79,7 +79,7 @@ public class basic{
             return count;
         }
     
-        public static void floodFillA(){
+    public static void floodFillA(){
            int n = 4;
            int m = 4;
            int[][] dir ={{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1}};
@@ -88,8 +88,6 @@ public class basic{
     
            System.out.println(floodFill_helper(0,0,n-1,m-1,dir,s,"",vis));
         }
-    
-
 
     public static void main(String[] args){
         // floodfillQ();
