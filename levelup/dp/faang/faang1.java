@@ -240,6 +240,102 @@ public class faang1 {
         return sum;
 	}
    
+    //Find number of solutions of a linear equation of n variables :- https://www.geeksforgeeks.org/find-number-of-solutions-of-a-linear-equation-of-n-variables/
+   
+    public static int countSol(int coeff[], int n, int rhs)
+    {
+        int[] dp = new int[rhs+1];
+        dp[0] = 1;
+
+        for(int i =0 ;i < n;i++){
+            for(int j = coeff[i];j<=rhs;j++){
+                dp[j]+= dp[i-j];
+            }
+        }
+
+        return dp[rhs];
+    }
+    
+    //97. Interleaving String :- https://leetcode.com/problems/interleaving-string/
+    public boolean leave(String s1, String s2, String s3,int i,int j,Boolean[][] dp){
+        if(i == s1.length() && j == s2.length()){
+            return true;
+        }
+
+        if(dp[i][j] != null){
+            return dp[i][j];
+        } 
+
+        if ( i < s1.length() && s1.charAt(i) == s3.charAt(i+j)){
+            Boolean f1 = leave(s1,s2,s3,i+1,j,dp);
+            if(f1){
+                dp[i][j] = true;
+                return true;
+            }
+        }
+
+        if ( j < s2.length() && s2.charAt(j) == s3.charAt(i+j)){
+            Boolean f1 = leave(s1,s2,s3,i,j+1,dp);
+            if(f1){
+                dp[i][j] = true;
+                return true;
+            }
+        }
+         dp[i][j] =false;
+
+        return false;
+
+
+    }
+    
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if((s1.length() + s2.length() )!= s3.length()){
+            return false;
+        }
+
+        Boolean[][] dp = new Boolean[s1.length()+1][s2.length()+1];
+
+        return leave(s1,s2,s3,0,0,dp);
+    }
+   
+    //688. Knight Probability in Chessboard
+
+    public double knightProbability(int n, int k, int row, int column) {
+        double[][] curr = new double[n][n];
+        double[][] next = new double[n][n];
+
+        curr[row][column] = 1;
+
+        int[][] dir = {{-2,1},{-1,2},{2,1},{1,2},{2,-1},{1,-2},{-2,-1},{-1,-2}};
+
+        for(int m = 0 ; m < k ; m++){
+            for(int i = 0 ; i < n ; i++){
+                for(int j = 0 ; j < n ; j++){
+                    if(curr[i][j] != 0){
+
+                        for(int d =0 ; d < dir.length ; d++){
+                            int r = i+dir[d][0];
+                            int c = j+dir[d][1];
+                            if(r >=0 && c>=0 && r<n && c<n){
+                                next[r][c]+=curr[i][j]/8.0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            curr = next;
+            next = new double[n][n];
+        }
+
+        double sum = 0;
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < n ; j++){
+                sum+=curr[i][j];
+            }
+        }
+        return sum;
+    }
    
     public static void main(String[] args) {
         //System.out.println(maxProd(4));
