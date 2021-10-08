@@ -286,7 +286,6 @@ public class diaSet {
         int[] arr = new int[3];
         arr = longest(root, arr);
         return arr[2];
-
     }
 
 }

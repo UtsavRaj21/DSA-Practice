@@ -409,7 +409,7 @@ public class view {
     }
 
     public static void verticalSumOrder_2Helper(TreeNode root,ListNode node){
-        node.data = root.val;
+        node.data += root.val;
         if(root.left!=null){
             if(node.prev == null){
                 ListNode nNode = new ListNode(0);

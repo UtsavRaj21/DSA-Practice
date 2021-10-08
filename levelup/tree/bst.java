@@ -2,7 +2,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class bst {
+public class bst { 
     public static class TreeNode {
         int val = 0;
         TreeNode left = null;

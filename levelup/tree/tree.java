@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class tree {
+    
     public static class TreeNode {
         int val = 0;
         TreeNode left = null;
@@ -140,7 +141,7 @@ public class tree {
     }
     
     //863
-     public static ArrayList<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    public static ArrayList<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         ArrayList<TreeNode> path = new ArrayList<>();
         
         nodetoroadPAth(root,target,path);
@@ -157,7 +158,7 @@ public class tree {
     }
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
-public static void kDown(TreeNode root, TreeNode blockNode, int K, ArrayList<Integer> ans) {
+    public static void kDown(TreeNode root, TreeNode blockNode, int K, ArrayList<Integer> ans) {
     if (root == null || root == blockNode || K < 0)
         return;
 
@@ -172,7 +173,7 @@ public static void kDown(TreeNode root, TreeNode blockNode, int K, ArrayList<Int
 }
 
 
-public static int distanceK_01(TreeNode root, TreeNode target, int k, ArrayList<Integer> ans) {
+    public static int distanceK_01(TreeNode root, TreeNode target, int k, ArrayList<Integer> ans) {
     if (root == null)
         return -1;
     if (root == target) {
