@@ -1,4 +1,5 @@
   public class heapSort {
+
      //  increasing for (true)
     private static Boolean compareTo(int a,int b,Boolean isMax){
         if(isMax){
@@ -42,14 +43,14 @@
   
     // Driver code
     public static void main(String args[]) {
-      int arr[] = { 10, 20, 30, -2, -3, -4, 5, 6, 7, 8, 9, 22, 11, 13 };
+      int arr[] = {  20,10, 30, -2, -4, -3}; //, 5, 6, 7, 8, 9, 22, 11, 13 
   
       //heapSort hs = new heapSort();
      
       int n = arr.length;
 
       for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(arr, n, i,false );  // true incresing
+        heapify(arr, n, i,true );  // true incresing
       }
   
       // Heap sort
@@ -57,7 +58,7 @@
         swap(arr,0,i);
   
         // Heapify root element
-        heapify(arr, i, 0,false);
+        heapify(arr, i, 0,true);
       }
 
       for (int i = 0; i < n; ++i)

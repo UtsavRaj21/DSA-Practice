@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class copyRandom {
+    
     public static class ListNode {
         int val = 0;
         ListNode next = null;
@@ -38,7 +39,7 @@ public class copyRandom {
         }
     }
     
-     public static ListNode extractCopy(ListNode head){
+    public static ListNode extractCopy(ListNode head){
         ListNode curr = head;
         ListNode dummy = new ListNode(-1);
         ListNode prev = dummy;
