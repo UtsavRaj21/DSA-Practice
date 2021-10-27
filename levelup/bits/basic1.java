@@ -323,6 +323,115 @@ public class basic1{
         return rem==0;
     }
     
+    //Flip Bits To Convert A To B
+
+    public static void convert(int a,int b){
+        int n = a^b;
+        int count = 0;
+        while(n>0){
+            int mask = n & (~n+1);
+            n = n-mask;
+            count++;
+        }   
+        System.out.println(count);
+    }
+
+    //Copy Set Bits In A Range
+
+    public static void set(int a,int b,int right,int left){
+        int mask = 1<<(right-left+1);
+        mask = mask-1;
+        mask = mask<<left-1;
+        mask = mask & a;
+        int ans = b| mask;
+        System.out.println(ans);
+    }
+
+    //Solve 7n By 8
+    public static void solve(int n){
+        int ans = ((n<<3)-n)>>3;
+        System.out.println(ans);
+    }
+
+    //Swap All Odd And Even Bits
+
+    public static void swap(int a){
+        int evenMask = 0b01010101010101010101010101010101; // 0xAAAAAAAA
+        int oddMask =  0b10101010101010101010101010101010; // 0x55555555
+
+        int e = a & evenMask;
+        int o = a & oddMask
+
+        e = e << 1;
+        o = o >> 1;
+
+        int ans = e|o;
+        System.out.println(ans);
+    }
+    
+    //Sum Of Bit Differences Of All Pairs
+    
+    public static long solution(int[] arr){
+        //write your code here
+        long ans =0;
+        for(int i =0 ; i <32 ; i++){
+            int mask = 1 << i;
+            long zero = 0;
+            long one = 0;
+            for(int val : arr){
+                if((val&mask) ==0){
+                    zero++;
+                }else{
+                    one++;
+                }
+            }
+            ans+= 2*zero*one;
+        }
+        return ans;
+      }
+    
+     // Check Divisibility By 3
+
+     public static divisible(String str){
+        int two = 0;
+        int one = 0;
+        boolean remove=true;
+            
+        for(int i = str.length()-1;i >=0 ; i--){
+        if(str.charAt(i) == '1'){
+            if(remove){
+                one++;
+            }else{
+                two++;
+            }
+        }
+        remove = !remove;
+        }
+        int diff = Math.abs(one - two);
+        System.out.println(diff%3 == 0);
+     }
+    
+    //Count Set Bits In First N Natural Numbers
+    
+    static int maxPower2(int n){
+        int i=0;
+        while((1<<(i+1)) <= n){
+            i++;
+        }
+        return i;
+    }
+
+    public static int solution(int n){
+        if(n==0)return 0;
+        
+        int i = maxPower2(n);
+        int firstGroup = i*(1<<(i-1));
+        int remaining = n - (1<<(i)) + 1;
+        int faith = solution(n - (1<<(i)));
+        
+        return firstGroup + remaining+ faith;
+      }
+     //===================================================================================
     //Print Binary And Reverse Bits
 
     public static void reverseBits(int n){
