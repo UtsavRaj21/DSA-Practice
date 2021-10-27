@@ -1,3 +1,4 @@
+import java.rmi.dgc.Lease;
 import java.util.*;
 public class basic1{
     //Basic of Manipulation
@@ -321,6 +322,110 @@ public class basic1{
         
         return rem==0;
     }
+    
+    //Print Binary And Reverse Bits
+
+    public static void reverseBits(int n){
+        int bi =0,rev =0;
+        boolean flag = false;
+        for(int i = 31 ; i>=0 ; i--){
+            int mask = 1<<i;
+            if((n&mask)>1) flag = true;
+
+            if(!flag) continue;
+
+            if((n&mask) == 0){
+                System.out.print(0);
+            }else{
+                System.out.print(1);
+                int bmask = 1 << bi;
+                rev |= bmask;
+            }
+            bi++;
+        }
+        System.out.println();
+        System.out.println(rev);
+    }
+    
+    //Min Xor Pairs
+
+    public static void solution(int[] arr) {
+        int min = Integer.MAX_VALUE;
+        int n = arr.length;
+        Arrays.sort(arr);
+        for(int i = 0 ; i <arr.length - 1 ; i++){
+            min = Math.min(min,(arr[i]^arr[i+1]));
+        }
+
+        for(int i = 0 ; i <arr.length - 1 ; i++){
+            if((arr[i]^arr[i+1]) == min){
+                System.out.println(arr[i]+", "+arr[i+1]);
+            }
+        } 
+    }
+
+    //N Queens Using Bit
+
+    //using space -> array
+
+    public static boolean isSafe(int row ,int col,int[] cols,int[] ndiag ,int[] rdiag,int n){
+        return cols[col] == 0 && ndiag[rol+col] == col && rdiag[col-row+n-1];
+    }
+
+    public static void solution(boolean[][] board, int row, int[] cols, int[] ndiag, int[] rdiag, String asf) {
+        if(row == board.length){
+            System.out.println(asf+".");
+            return;
+        }
+        for(int col = 0 ; col < board.length;col++){
+            if(isSafe(row,col,cols,ndiag,rdiag,board.length)){
+                 cols[col] = 1;
+                 ndiag[row+col] = 1;
+                 rdiag[col-row+n+1] = 1;
+
+                 solution(board, row+1, cols, ndiag, rdiag, asf+row+"-"+col+", ");
+                 cols[col] = 0;
+                 ndiag[row+col] = 0;
+                 rdiag[col-row+n+1] = 0;
+             }
+        }
+    }
+    
+    //using bit
+
+    public static boolean isSafe(int row ,int col,int cols,int ndiag ,int rdiag,int n){
+        return (cols&mask(col)) == 0 && (ndiag&mask(col+row)) == 0 && (rdiag & mask(col-row+n-1)) == 0;
+    }
+
+    public static int mask(int i){
+        return 1<<i;
+    }
+
+    public static void solution(boolean[][] board, int row, int cols, int ndiag, int rdiag, String asf) {
+        if(row == board.length){
+            System.out.println(asf+".");
+            return;
+        }
+        int n = board.length;
+        for(int col = 0 ; col < board.length;col++){
+            if(isSafe(row,col,cols,ndiag,rdiag,board.length)){
+                //toggle to 1;
+                 cols ^= mask(col);
+                 ndiag ^= mask(col+row);
+                 rdiag ^= mask(col-row+n-1);
+
+                 solution(board, row+1, cols, ndiag, rdiag, asf+row+"-"+col+", ");
+
+                 //toggle to 0;
+                 cols ^= mask(col);
+                 ndiag ^= mask(col+row);
+                 rdiag ^= mask(col-row+n-1);
+             }
+        }
+    }
+    
+    
+    
     
     public static void main(String[] args) {
         
