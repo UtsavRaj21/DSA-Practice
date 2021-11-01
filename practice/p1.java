@@ -23,10 +23,18 @@ public class p1 {
 
     public static void main(String[] args) {
      
-        int k = 3;
-        String str = "as3gAsd";
-        String ans = find(k,str);
-        System.out.println(ans);
+        // int k = 3;
+        // String str = "as3gAsd";
+        // String ans = find(k,str);
+        // System.out.println(ans);
+        int k=3;
+        if (1){
+            System.out.println("It's true");
+        }
+        
+        else{
+            System.out.println("bye");
+        }
 
        
     }
