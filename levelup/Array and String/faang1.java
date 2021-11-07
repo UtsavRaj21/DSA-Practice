@@ -1,4 +1,5 @@
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class faang1 {
 
@@ -264,7 +265,6 @@ public class faang1 {
     }
 
     //442. Find All Duplicates in an Array
-
     public List<Integer> findDuplicates(int[] nums) {
         public List<Integer> findDuplicates(int[] nums) {
             List<Integer> ans = new ArrayList<>();
@@ -279,6 +279,102 @@ public class faang1 {
             }
             return ans;
         }
+    }
+    
+    //43. Multiply Strings
+    public String multiply(String num1, String num2) {
+        int l1 = num1.length();
+        int l2 = num2.length();
+        int pf =1;
+        if(l1==0 || l2 ==0) return '0';
+
+        int i = l1-1;
+        int[] res = new int[l1+l2];
+        while(i>=0){
+            int num = num1.charAt(i) - '0';
+            int k = l1+l2-pf;
+            int j = l2-1;
+            int carry = 0;
+            while(j>=0){
+                int mul = num * (num2.charAt(j)-'0') + carry +res[k];
+                carry = mul / 10;
+                res[k] = mul  %10;
+                k--;
+                j--
+
+            }
+            if(carry > 0){
+                res[k] = carry + res[k];
+            }
+            i--;
+            pf++;
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean flag = false;
+        for(int val : res){
+            if(val == 0 && flag == false){
+                continue;
+            }else{
+                sb.append(val);
+                flag = true;
+            }
+        }
+        return sb.toString();
+
+    }
+    
+    //936. Stamping The Sequence
+    public boolean canReplace(char[] tchar,int pos,char[] schar){
+        for(int i = 0 ; i < schar.length ; i++){
+            if(tchar[i+pos] != '?' && tchar[i+pos] != schar[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int replace(char[] tchar , int pos , int len , int count){
+        for(int i = 0 ; i < len; i++){
+            if(tchar[i+pos] != '?'){
+                tchar[i+pos] = '?';
+                count++;
+            }
+        }
+        return count;
+    }
+    public int[] movesToStamp(String stamp, String target) {
+        char[] tchar = target.toCharArray();
+        char[] schar = stamp.toCharArray();
+        int count =0;
+        boolean[] visited = new boolean[tchar.length];
+        List<Integer> res = new ArrayList<>();
+        boolean didchange = false;
+        while(count != tchar.length){
+            
+            for(int i = 0 ; i <= tchar.length - schar.length ;i++){
+                if(!visited[i] && canReplace(tchar,i,schar)){
+                    count = replace(tchar,i,schar.length,count);
+                    visited[i] = true;
+                    didchange = true;
+                    res.add(i);
+
+                    if(count == tchar.length){
+                        break;
+                    }
+                }
+            }
+           
+        }
+         if(!didchange){
+                return new int[0];
+        }
+        int[] ans = new int[res.size()];
+        int k=0;
+        for(int i = res.size()-1;i>=0;i--){
+            ans[k++] = res.get(i);
+        }
+
+        return ans;
     }
     public static void main(String[] args) {
         
