@@ -497,10 +497,35 @@ public class basic3 {
         }
         return ans.toArray(new int[ans.size()][]);
     }
-
+  
     // leetcode 57. https://leetcode.com/problems/insert-interval/
     public int[][] insert(int[][] intervals, int[] newInterval) {
-        //H.W
+        ArrayList<int[]> res = new ArrayList<>();
+        int idx =0;
+        while(idx < intervals.length){
+            if(intervals[idx][0] < newInterval[0]){
+                res.add(intervals[idx]);
+                idx++;
+            }
+        }
+        if(res.size()==0 || newInterval[0] > res.get(res.size()-1)[1]){
+          
+           res.add(newInterval);
+        }else{
+             //merging
+            int[] lastInterval =   res.get(res.size()-1);
+            lastInterval[1] = Math.max(lastInterval[1], newInterval[1]);
+        }
+        while(idx < intervals.length){
+            if(intervals[idx][0] <= res.get(res.size()-1)[1]){
+                int[] lastInterval =   res.get(res.size()-1);
+                lastInterval[1] = Math.max(intervals[idx][1], newInterval[1]);
+            }else{
+                res.add(intervals[idx]);
+            }
+            idx++;
+        }
+        return res.toArray(new int[res.size()][2]);
     }
 
     public static void main(String[] args) {

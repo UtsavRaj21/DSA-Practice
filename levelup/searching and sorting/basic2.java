@@ -92,7 +92,22 @@ public class basic2 {
      return burden;
   }
     
-    
+  //Count Zeros In A Sorted Matrix
+  public static int countZeros(int[][]mat) {
+    int count =0;
+    int i=0;
+    int j = mat[0].length-1;
+    while(i<mat.length && j >=0){
+        if(mat[i][j] == 1){
+            j--;
+        }else{
+            count+=j+1;
+            i++;
+        }
+    }
+    return count;
+  }
+
     
     public static void main(String[] args) {
         
