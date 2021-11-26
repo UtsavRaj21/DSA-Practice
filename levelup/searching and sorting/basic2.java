@@ -268,6 +268,7 @@ public class basic2 {
         return res;
     }
       
+    //Punish The Students
     public static boolean shouldPunish(int[]roll, int[]marks, double avg) {
         int count =0;
         int sum = 0;
@@ -292,19 +293,140 @@ public class basic2 {
         return newAvg >= avg;
     }
       
-
-    
-        public static int largestPerimeter(int[]nums) {
-         Arrays.sort(nums);
-         int n = nums.length;
-         for(int i =n-1 ; i>1 ; i-- ){
-            if(nums[i] < nums[i-1]+nums[i-2]){
-                return nums[i]+nums[i-1]+nums[i-2];
-            }
-         }
-          return 0;
+    //Largest Perimeter Triangle
+    public static int largestPerimeter(int[]nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        for(int i =n-1 ; i>1 ; i-- ){
+        if(nums[i] < nums[i-1]+nums[i-2]){
+            return nums[i]+nums[i-1]+nums[i-2];
         }
-      public static void main(String[] args) {
+        }
+        return 0;
+    }
+      
+    //Largest Number
+    public static String largestNumber(int[]nums) {
+        int n = nums.length;
+        String[] sArr = new String[n];
+        for(int i =0 ;i<n;i++){
+            sArr[i] = ""+nums[i];
+        }
+        Arrays.sort(sArr,(a,b)->{
+            long d1 = Long.parseLong(a+b);
+            long d2 = Long.parseLong(b+a);
+
+            if(d1>d2){
+                return 1;
+            }else if(d2>d1){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        for(int i = n-1; i >=0 ;i--){
+            sb.append(sArr[i]);
+        }
+        
+        return sb.toString().charAt(0) == '0' ? "0":sb.toString();
+    }
+    
+    //Ishaan And Sticks
+    public static ArrayList<Integer>  solve(int[]arr) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int val:arr){
+            if(map.containsKey(val)){
+                map.put(val, map.get(val) + 1);
+            }else{
+                map.put(val, 1);
+            }
+        }
+
+        int area = 0;
+        int num = 0;
+
+        for(var val : map.keySet()){
+            int value = map.get(val);
+            if(value > 3){
+                if(val*val > area){
+                    area = val*val;
+                    num = value/4;
+                }
+            }
+        }
+        ArrayList<Integer> res = new ArrayList<>();
+        res.add(area);
+        res.add(num);
+        return res;
+    }
+    
+    //Toppers Of Class
+
+    public static class node{
+        int marks;
+        int index;
+        public void setMarks(int a){
+        this.marks=a;
+      }
+        public void setIndex(int b)
+        {
+            this.index=b;
+        }
+    }
+
+    void kTop(node arr[],int n)
+    {
+        Arrays.sort(arr,(a,b)->{
+            if(a.marks == b.marks){
+                return a.index - b.index;
+            }
+            return b.marks - a.marks;
+        }); 
+
+        for(int i = 0 ; i < n ; i++){
+            System.out.println(arr[i].marks+" " +arr[i].index);
+        }
+    }
+    
+    public static int[] kToppers(int[]marks, int k) {
+         int[] res = new int[k];
+      node[] arr = new node[marks.length];
+      for(int i=0;i<marks.length;i++){
+          arr[i] =  new node();
+          arr[i].setMarks(marks[i]);
+          arr[i].setIndex(i);
+          
+      }
+        Arrays.sort(arr,(a,b)->{
+            if(a.marks == b.marks){
+                return a.index - b.index;
+            }
+            return b.marks - a.marks;
+        }); 
+
+        for(int i = 0 ; i < k ; i++){
+            res[i] = arr[i].index;
+        }
+        return res;
+    }
+    
+    //Leaders In An Array
+    public static ArrayList<Integer>  leaders(int[]arr) {
+        ArrayList<Integer> res = new ArrayList<>();
+        int n = arr.length-1;
+        int max = -(int)1e9;
+         while(n>=0){
+             if(max <= arr[n]){
+                 res.add(arr[n]);
+                 max = arr[n];
+             }
+             n--;
+         }
+         Collections.reverse(res);
+         return res;
+      }
+    public static void main(String[] args) {
         
     }
 }
