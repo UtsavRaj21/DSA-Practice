@@ -276,7 +276,7 @@ public class basic1{
         int res = prevSum;
 
         for(int i =1;i<arr.length;i++){
-            prevSum = prevSum + sum + (n * arr[n-i]);
+            prevSum = prevSum + sum - (n * arr[n-i]);
             res = Math.max(res , prevSum);
         }
         return res;
@@ -529,7 +529,7 @@ public class basic1{
         int total = n1+n2;
 
         while(lo<=hi){
-            int ali = lo+(hi+lo)/2;         //a left index
+            int ali = lo+(hi-lo)/2;         //a left index
             int bli = (total + 1)/2-ali;      //bleft index
 
             int alm1 = ali ==0 ?Integer.MIN_VALUE:a1[ali-1];
