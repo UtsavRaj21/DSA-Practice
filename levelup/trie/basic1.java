@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.Dictionary;
 import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
 
 public class basic1{
@@ -235,6 +234,7 @@ public class basic1{
         }
         return -1;
     }
+
     public static String replaceWords(String dictionary[], String sentence) {
         Node root = new Node();
         for(String word : dictionary){
@@ -279,6 +279,85 @@ public class basic1{
         return sb.toString();
     }
     
+    //Map Sum Pairs
+
+    public static class MapSum {
+
+        /** Initialize your data structure here. */
+        public MapSum() {
+            
+        }
+    
+        public void insert(String key, int val) {
+    
+        }
+    
+        public int sum(String prefix) {
+    
+        }
+      }
+    
+    //Concatenated Words 
+    public static class NodeCon{
+        NodeCon[] children;
+        String s;
+        NodeCon(){
+            this.children = new NodeCon[26];
+        }
+    }
+    private static HashSet<String> set;
+
+    public static void insertContact(String word , NodeCon root){
+        if(word.length() == 0)return;
+        NodeCon ptr = root;
+        for(int i = 0 ; i < word.length(); i++){
+            char ch = word.charAt(i);
+            if(ptr.children[ch-'a'] == null){
+                ptr.children[ch-'a'] = new NodeCon();
+            }
+            ptr = ptr.children[ch-'a'];
+        }
+        ptr.s = word;
+    }
+   
+    public static void matchCharacter(NodeCon p1 , NodeCon p2 , NodeCon root){
+        if(p1.s != null && p2.s!=null){
+            set.add(p1.s);
+        }
+
+        if(p2.s != null){
+            matchCharacter(p1, root , root);
+        }
+
+        for(int i = 0 ; i < 26 ; i++){
+            if(p1.children[i] != null && p2.children[i] != null){
+                matchCharacter(p1.children[i],p2.children[i],root);
+            }
+        }
+    }
+   public static void dfsTree(NodeCon ptr,NodeCon root){
+        if(ptr.s != null){
+            matchCharacter(ptr,root,root);
+        }
+
+        for(NodeCon child : ptr.children){
+            if(child!=null){
+                dfsTree(child, root);
+            }
+        }
+   }
+
+    public static List<String> findAllConcatenatedWordsInADict(String[] words) {
+        set = new HashSet<>();
+        NodeCon root = new NodeCon();
+        for(String word : words){
+            insertContact(word,root);
+        }
+        dfsTree(root,root);
+        List<String> res = new ArrayList<>(set);
+        return res;
+    }
+
     public static void main(String[] args) {
          
      }
