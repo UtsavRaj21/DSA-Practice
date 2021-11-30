@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
 
 public class basic1{
 
-    // implementation of trie
+    // Implementation of Trie
     public static class Trie {
 
         public class Node{
@@ -281,23 +281,60 @@ public class basic1{
     
     //Map Sum Pairs
 
-    public static class MapSum {
+    public static class MapSum { 
+        public class NodeSum{
+            NodeSum[] children;
+            boolean isEnd;
+            int n;
+            NodeSum(){
+                this.children = new NodeSum[26];
+                this.isEnd = false;
+                this.n =0;
+            }
+        }
 
         /** Initialize your data structure here. */
+         HashMap<String,Integer> map ;
+            NodeSum root;
         public MapSum() {
-            
+            root = new NodeSum();
+            map =new HashMap<>();
         }
     
-        public void insert(String key, int val) {
-    
+        public void insert(String word, int val) {
+            int p = 0;
+            if(map.containsKey(word)){
+                p = map.get(word);
+            }
+            NodeSum ptr = root;
+            map.put(word,val);
+            for(int i = 0 ; i < word.length() ;i++){
+                char ch = word.charAt(i);
+                if(ptr.children[ch-'a'] == null){
+                    ptr.children[ch-'a'] = new NodeSum();
+                }
+                ptr = ptr.children[ch-'a'];
+                ptr.n = ptr.n + val - p;
+            }
+            ptr.isEnd = true;
         }
     
         public int sum(String prefix) {
-    
+            NodeSum ptr =root;
+            for(int i = 0 ; i < prefix.length() ;i++){
+                char ch = prefix.charAt(i); 
+                if(ptr.children[ch-'a'] == null){
+                    return 0;
+                }
+                ptr = ptr.children[ch-'a'];
+               
+            }
+            return ptr.n;
         }
       }
     
     //Concatenated Words 
+    
     public static class NodeCon{
         NodeCon[] children;
         String s;
@@ -305,6 +342,7 @@ public class basic1{
             this.children = new NodeCon[26];
         }
     }
+    
     private static HashSet<String> set;
 
     public static void insertContact(String word , NodeCon root){
@@ -323,6 +361,7 @@ public class basic1{
     public static void matchCharacter(NodeCon p1 , NodeCon p2 , NodeCon root){
         if(p1.s != null && p2.s!=null){
             set.add(p1.s);
+            return;
         }
 
         if(p2.s != null){
@@ -335,7 +374,8 @@ public class basic1{
             }
         }
     }
-   public static void dfsTree(NodeCon ptr,NodeCon root){
+   
+    public static void dfsTree(NodeCon ptr,NodeCon root){
         if(ptr.s != null){
             matchCharacter(ptr,root,root);
         }
@@ -358,7 +398,126 @@ public class basic1{
         return res;
     }
 
-    public static void main(String[] args) {
-         
+    //720. Longest Word in Dictionary
+    public static class Longest{
+        Longest[] children;
+        String s;
+        Longest(){
+            this.children = new Longest[26];
+        }
+    }
+
+    public static void addLongest(String word,Longest root){
+        Longest ptr = root;
+        for(int i = 0 ; i < word.length() ;i++){
+            char ch = word.charAt(i);
+            if(ptr.children[ch-'a'] == null){
+                ptr.children[ch-'a'] = new Longest();
+            }
+            ptr = ptr.children[ch-'a'];
+        }
+        ptr.s = word ;
+    }
+
+    static String res ;
+    static int len;
+
+    public static void searchLongest(int idx,Longest ptr ,Longest root){
+        if(ptr.children[idx] == null){
+            return;
+        }
+        ptr = ptr.children[idx];
+        if(ptr.s == null){
+            return;
+        }
+        
+        
+        if(len<ptr.s.length()){
+            len =ptr.s.length();
+            res = ptr.s;
+        }
+        
+
+        for(int i = 0 ; i < 26 ; i++){
+            searchLongest(i,ptr ,root);
+        }
+        
+    }
+    
+    public String longestWord(String[] words) {
+        Longest root = new Longest();
+        for(String word : words){
+            addLongest(word,root);
+        }
+         res = "";
+         len =0;
+        for(int i = 0 ; i < 26 ; i++){
+           
+            searchLongest(i,root ,root);
+        }
+        return res;
+    }
+    
+    //Stream Of Characters
+
+    public static class StreamChecker {
+        public static class Node{
+            Node[] children;
+            boolean isEnd ;
+            Node(){
+                this.children = new Node[26];
+                this.isEnd = false;
+            }
+        }
+
+        static Node root;
+
+        public static void insert(String word,Node root){
+            Node ptr =root;
+            for(int i = word.length()-1;i>=0;i--){
+                char ch = word.charAt(i);
+                if(ptr.children[ch-'a'] == null){
+                    ptr.children[ch-'a'] = new Node();
+                }
+                ptr = ptr.children[ch-'a'];
+            }
+            ptr.isEnd = true;
+        }
+        public StreamChecker(String[] words) {
+             root = new Node();
+            sb = new StringBuilder();
+            for(var word : words){
+                insert(word, root);
+            }
+        }
+
+        static StringBuilder sb;
+    
+        public boolean query(char letter) {
+            sb.append(letter);
+            return find();
+        }
+        public boolean find(){
+            Node ptr = root;
+            for(int i = sb.length() -1;i>=0;i--){
+                char ch = sb.charAt(i);
+                if(ptr.children[ch-'a'] == null){
+                    return false;
+                }
+                ptr= ptr.children[ch-'a'];
+                if(ptr.isEnd){
+                    return true;
+                }
+
+            }
+            return false ;
+        }
+      }
+    
+      public static void main(String[] args) {
+        for(int i = 0 ; i < 26 ;i++){
+            System.out.println((char)('a'+i));
+        }
+        
      }
  }
