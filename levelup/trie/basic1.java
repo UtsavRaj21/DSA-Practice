@@ -514,7 +514,122 @@ public class basic1{
         }
       }
     
-      public static void main(String[] args) {
+    //1638. Count Substrings That Differ by One Character
+
+    public int diffChar(String s1,String s2){
+        int diff = 0;
+        int i=0;
+        int j=0;
+        while(i<s1.length()){
+            if(s1.charAt(i) != s2.charAt(j)){
+                diff++;
+            }
+            if(diff== 2){
+                break ;
+            }
+            i++;
+            j++;
+
+        }
+        return diff;
+
+    }
+    public int countSubstrings(String s, String t) {
+        int res =0;
+        for(int i=0;i<s.length();i++){
+            for(int j=0;j<t.length();j++){
+                int a = i;
+                int b = j;
+                StringBuilder sb1 = new StringBuilder();
+                StringBuilder sb2 = new StringBuilder();
+                while(a<s.length() && b< t.length()){
+                    sb1.append(s.charAt(a));
+                    sb2.append(t.charAt(b));
+                    int n = diffChar(sb1.toString(),sb2.toString());
+                    if(n>1){
+                        break;
+                    }
+                    res+=n;
+                    a++;
+                    b++;
+                }
+            }
+        }
+        return res;
+    }
+      
+    //421. Maximum XOR of Two Numbers in an Array
+    public static class Xor{
+        Xor left;
+        Xor right;
+    }
+
+    public static void addXor(int num ,Xor root){
+        int bitIndex = 30;
+        Xor curr = root;
+        while(bitIndex >= 0){
+            int mask = 1<<bitIndex;
+            int bit = (num&mask) > 0 ? 1:0;
+
+            if(bit ==0){
+                if(curr.left == null){
+                    curr.left = new Xor();
+                }
+                curr = curr.left ;
+            }else{
+                if(curr.right == null){
+                    curr.right = new Xor();
+                }
+                curr = curr.right ;
+            }
+            bitIndex--;
+        }
+    }
+
+    public static int findXor(int val, Xor root){
+        int bitIndex = 30;
+        Xor curr = root;
+        int ans = 0;
+        while(bitIndex >= 0){
+            int mask = 1<<bitIndex;
+            int bit = (val&mask) > 0 ?1 : 0 ;
+            if(bit == 0){
+                if(curr.left!=null){
+                    curr = curr.left;
+                }else{
+                    curr = curr.right;
+                    ans |= mask ;
+                }
+            }else{
+                if(curr.right!=null){
+                    curr = curr.right;
+                    ans |= mask ;
+                }else{
+                    curr = curr.left;
+                }
+            }
+
+            bitIndex--;
+        }
+        return ans;
+    }   
+    public static int findMaximumXOR(int[] nums) {
+        int max =0;
+       Xor root = new Xor();
+       for(int num : nums){
+            addXor(num,root);
+       }
+
+       for(int val : nums){
+           int find = Integer.MAX_VALUE ^ val;
+           int res = findXor(find,root);
+           max = Math.max(max, res ^ val);
+       }
+
+       return max;
+    }
+    
+    public static void main(String[] args) {
         for(int i = 0 ; i < 26 ;i++){
             System.out.println((char)('a'+i));
         }
