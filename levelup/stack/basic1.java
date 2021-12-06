@@ -262,6 +262,86 @@ public class basic1 {
         return (int) Math.ceil(op / 2.0) + (int) Math.ceil(cl / 2.0);
     }
 
+    // 1021. Remove Outermost Parentheses
+    public String removeOuterParentheses(String s) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = false;
+        int start = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (!first && ch == '(') {
+                first = true;
+            } else if (ch == '(') {
+                start++;
+                sb.append(ch);
+            } else if (start > 0 && ch == ')') {
+                start--;
+                sb.append(ch);
+            } else {
+                first = false;
+            }
+        }
+
+        return sb.toString();
+    }
+
+    // 856. Score of Parentheses
+    public int scoreOfParentheses(String s) {
+        /// marker -1 :- opening
+        int res = 0;
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                st.push(-1);
+            } else if (st.peek() == -1) {
+                st.pop();
+                st.push(1);
+            } else {
+                int sum = 0;
+                while (st.peek() != -1) {
+                    sum += st.pop();
+                }
+                st.pop();
+                st.push(2 * sum);
+            }
+        }
+        while(st.size() > 0){
+            res+=st.pop();
+        }
+        return res;
+    }
+
+    //
+    public String reverseParentheses(String s) {
+        Stack<Character> st = new Stack<>();
+        for(int i = 0 ; i < s.length();i++){
+            char ch = s.charAt(i);
+            if(ch == ')'){
+                StringBuilder sb = new StringBuilder();
+                while(st.peek()!='('){
+                    char c = st.pop();
+                    sb.append(c);
+                }
+                st.pop();
+                
+                for(int j=0;j<sb.length();j++){
+                    char a = sb.charAt(j);
+                    st.push(a);
+                }
+            }else{
+                st.push(ch);
+            }
+        }
+        StringBuilder str = new StringBuilder();
+        while(st.size()>0){
+            char ch = st.pop();
+            str.append(ch);
+        }
+        str = str.reverse();
+        return str.toString() ;
+    }
     public static void main(String[] args) {
 
     }
