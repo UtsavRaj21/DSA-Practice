@@ -99,7 +99,6 @@ public class basic1 {
             }
             j++;
         }
-
         return var1;
 
     }
