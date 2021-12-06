@@ -196,6 +196,19 @@ public class dec {
         return Math.max(ans[0], ans[1]);
     }
 
+    //6 : 1217. Minimum Cost to Move Chips to The Same Position
+    public int minCostToMoveChips(int[] position) {
+      int even = 0 , odd = 0;
+        for(int i =0;i<position.length ;i++){
+            if(position[i] % 2 ==0){
+                even++;
+            }else{
+                odd++;
+            }
+        }
+        
+        return Math.min(odd,even);
+    }
     public static void main(String[] args) {
 
     }
