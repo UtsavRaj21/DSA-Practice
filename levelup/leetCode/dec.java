@@ -209,6 +209,35 @@ public class dec {
         
         return Math.min(odd,even);
     }
+
+    //1290. Convert Binary Number in a Linked List to Integer
+
+    public int count(ListNode head){
+        ListNode curr = head;
+        int c = -1;
+        while(curr!=null){
+            c++;
+            curr = curr.next;
+        }
+        return c;
+    }
+    
+    public int getDecimalValue(ListNode head) {
+        int count = count(head);
+        int res = 0;
+        ListNode curr = head;
+        while(count >= 0){
+            if(curr.val == 1){
+                res = res + (int)Math.pow(2, count);
+            }
+            count--;
+            curr = curr.next;
+           
+        }
+        return res;
+
+    }
+    
     public static void main(String[] args) {
 
     }
