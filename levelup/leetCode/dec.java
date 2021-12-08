@@ -210,7 +210,7 @@ public class dec {
         return Math.min(odd,even);
     }
 
-    //1290. Convert Binary Number in a Linked List to Integer
+    //7 : 1290. Convert Binary Number in a Linked List to Integer
 
     public int count(ListNode head){
         ListNode curr = head;
@@ -237,6 +237,29 @@ public class dec {
         return res;
 
     }
+    
+    //8 :- 563. Binary Tree Tilt
+     public int[] find(TreeNode root){
+        if(root == null){
+            int[] base = new int[2];
+            return base;
+        }
+        
+        int[] left = find(root.left);
+        int[] right = find(root.right);
+        int[] res = new int[2];
+        int diff = Math.abs(left[0] - right[0]);
+        res[0] = left[0] + right[0] + root.val;
+        res[1] = left[1] + right[1] + diff;
+        
+        return res;
+    }
+    public int findTilt(TreeNode root) {
+        if(root == null) return 0;
+        return find(root)[1];
+    }
+
+
     
     public static void main(String[] args) {
 

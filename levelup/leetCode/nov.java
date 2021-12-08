@@ -31,16 +31,37 @@ public class nov {
     //14:- 1286. Iterator for Combination
     class CombinationIterator {
 
+        LinkedList<String> que;
+        StringBuilder sb;
+        public void solve(String str,int start , int len){
+            if(len == 0){
+                que.addLast(sb.toString());
+            }
+            for(int i = start ; i < str.length() ;i++){
+                sb.append(str.charAt(start));
+                solve(str, i+1, len-1);
+                sb.deleteCharAt(sb.length()-1);
+            }
+        }
+
         public CombinationIterator(String characters, int combinationLength) {
-            
+            sb = new StringBuilder();
+            que = new LinkedList<>();
+            solve(characters,0,combinationLength);
         }
         
         public String next() {
-            
+            if(que.size() != 0){
+                String s = que.removeFirst();
+                return s;
+            }
         }
         
         public boolean hasNext() {
-            
+            if(que.size() == 0){
+                return false;
+            }
+            return true;
         }
     }
 
