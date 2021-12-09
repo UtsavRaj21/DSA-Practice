@@ -259,8 +259,29 @@ public class dec {
         return find(root)[1];
     }
 
-
-    
+    //1306. Jump Game III
+    public boolean Reach(int[] arr, int start,boolean[] vis){
+        if(arr[start] == 0){
+            return true;
+        }
+        vis[start] = true;
+        boolean flag = false;
+        
+        int forw = start + arr[start];
+        int back = start - arr[start];
+        if(arr.length > forw && !vis[forw]){
+            flag = flag || Reach(arr, forw,vis);
+        }
+        if(back>=0 && !vis[back]){
+            flag = flag || Reach(arr, back,vis);
+        }
+        vis[start] = false;
+        return flag;
+    }
+    public boolean canReach(int[] arr, int start) {
+        boolean[] vis = new boolean[arr.length];
+        return Reach(arr,start,vis);
+    }
     public static void main(String[] args) {
 
     }
