@@ -313,7 +313,7 @@ public class basic1 {
         return res;
     }
 
-    //
+    // 1190 :- Reverse Substrings Between Each Pair Of Parentheses
     public String reverseParentheses(String s) {
         Stack<Character> st = new Stack<>();
         for(int i = 0 ; i < s.length();i++){
@@ -341,6 +341,101 @@ public class basic1 {
         }
         str = str.reverse();
         return str.toString() ;
+    }
+    
+    //1249. Minimum Remove to Make Valid Parentheses
+    public static String reverseParentheses1(String s) {
+        Stack<Integer> st = new Stack<>();
+        for(int i = 0 ; i < s.length() ;i++){
+            char ch = s.charAt(i);
+            if(ch=='('){
+                st.push(i);
+            }else if(ch==')'){
+                if(st.size() == 0 || st.peek() == ' )'){
+                    st.push(i);
+                }else{
+                    st.pop();
+                }
+
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = s.length() - 1 ; i >=0 ; i--){
+            if(st.size() > 0 && st.peek() == i){
+                st.pop();
+            }else{
+                sb.append(s.charAt(i));
+            }
+        }
+        return sb.reverse().toString();
+    }
+
+    //1541. Minimum Insertions to Balance a Parentheses String
+    public int minInsertions(String s) {
+        
+    }
+
+    //901. Online Stock Span
+    public class Pair{
+        int pr;
+        int c;
+        Pair(int pr,int c){
+            this.pr = pr;
+            this.c = c;
+        }
+   }
+    
+    class StockSpanner {
+
+        Stack<Pair> st ;
+
+        public StockSpanner() {
+            st = new Stack<>();;
+        }
+        
+        public int next(int price) {
+            int c = 1;
+            while(st.size() > 0 && st.peek().pr <= price){
+                c = c + st.peek().c;
+                st.pop();
+            }
+            Pair res = new Pair(price,c);
+            st.push(res);
+            return res.c;
+        }
+    }
+    
+    //844. Backspace String Compare
+
+    public Stack<Character> makeStack(String s){
+        Stack<Character> st = new Stack<>();
+        for(int i = 0 ; i < s.length() ;i++){
+            char ch = s.charAt(i);
+            if(ch == '#'){
+                if(st.size() > 0 ){
+                    st.pop();
+                }
+            }else{
+                st.push(ch);
+            }
+        }
+        return st;
+    }
+    
+    public boolean backspaceCompare(String s, String t) {
+        Stack<Character> sts = makeStack(s);
+        Stack<Character> stt = makeStack(t);
+
+        if(sts.size() != stt.size()) return false ;
+        while(sts.size()>0){
+            if(sts.peek() != stt.peek()){
+                return false;
+            }
+            sts.pop();
+            stt.pop();
+        }
+        return true;
     }
     public static void main(String[] args) {
 
