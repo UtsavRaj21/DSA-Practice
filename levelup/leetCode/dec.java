@@ -259,7 +259,7 @@ public class dec {
         return find(root)[1];
     }
 
-    //1306. Jump Game III
+    // 9 :- 1306. Jump Game III :- dfs
     public boolean Reach(int[] arr, int start,boolean[] vis){
         if(arr[start] == 0){
             return true;
@@ -278,9 +278,28 @@ public class dec {
         vis[start] = false;
         return flag;
     }
+    
     public boolean canReach(int[] arr, int start) {
         boolean[] vis = new boolean[arr.length];
         return Reach(arr,start,vis);
+    }
+
+    //10 :- 790. Domino and Tromino Tiling
+    public int numTilings(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int MOD = (int)1e9 + 7;
+        long fCurrent = 5;
+        long fPrevious = 2;
+        long fBeforePrevious = 1;
+        for (int k = 4; k < n + 1; ++k) {
+            long tmp = fPrevious;
+            fPrevious = fCurrent;
+            fCurrent = (2 * fCurrent + fBeforePrevious) % MOD;
+            fBeforePrevious = tmp;
+        }
+        return (int) (fCurrent % MOD);
     }
     public static void main(String[] args) {
 
