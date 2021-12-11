@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 public class dec {
 
     // 1:-198. House Robber :- Using dp
@@ -239,7 +241,7 @@ public class dec {
     }
     
     //8 :- 563. Binary Tree Tilt
-     public int[] find(TreeNode root){
+    public int[] find(TreeNode root){
         if(root == null){
             int[] base = new int[2];
             return base;
@@ -254,6 +256,7 @@ public class dec {
         
         return res;
     }
+    
     public int findTilt(TreeNode root) {
         if(root == null) return 0;
         return find(root)[1];
@@ -300,6 +303,40 @@ public class dec {
             fBeforePrevious = tmp;
         }
         return (int) (fCurrent % MOD);
+    }
+    
+    //11 :- 878. Nth Magical Number
+    public int gcd(int a,int b){
+        if(b==0){
+            return a;
+        }
+        return gcd(b,a%b);
+    }
+
+    public int lcm(int a,int b){
+        return (a*b)/gcd(a,b);
+    }
+    
+    public long evaluate(int a,int b, int lcm,long mid){
+        return mid/a + mid/b + mid/lcm;
+    }
+    
+    public int nthMagicalNumber(int n, int a, int b) {
+        long low = 0;
+        long high = (long)1e17;
+        int lcm = lcm(a, b);
+        long res = 0;
+        while(low <= high){
+            long mid = low + (high - low)/2;
+            if(evaluate(a,b,lcm,mid) < n){
+                low = mid + 1;
+            }else{
+                res = mid;
+                high = mid - 1;
+            }
+        }
+        int mod = (int)1e9+7;
+       return (int)(res % mod);
     }
     public static void main(String[] args) {
 
