@@ -338,6 +338,29 @@ public class dec {
         int mod = (int)1e9+7;
        return (int)(res % mod);
     }
+    
+    //2)416. Partition Equal Subset Sum
+    
+    
+    //13) 1446. Consecutive Characters
+    public int maxPower(String s) {
+        if(s.length() == 1) return 1;
+        char pr = s.charAt(0);
+        int res = 1;
+        int count = 1;
+        for(int i = 1 ;i <s.length() ; i++){
+            char ch = s.charAt(i);
+            if(ch==pr){
+                count++;
+            }else{
+                pr = ch;
+                count = 1;
+            }
+            res = Math.max(res,count);
+        }
+        return res;
+    }
+    
     public static void main(String[] args) {
 
     }
