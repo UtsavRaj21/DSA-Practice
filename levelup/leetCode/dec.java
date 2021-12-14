@@ -178,121 +178,122 @@ public class dec {
         }
     }
 
-    public int[] robHouse(TreeNode root){
-        if(root ==  null){
+    public int[] robHouse(TreeNode root) {
+        if (root == null) {
             return new int[2];
         }
 
-        int[] left = robHouse(root.left) ;
-        int[] right = robHouse(root.right) ;
+        int[] left = robHouse(root.left);
+        int[] right = robHouse(root.right);
 
         int[] ans = new int[2];
         ans[0] = left[1] + right[1] + root.val;
-        ans[1] = Math.max(left[0],left[1]) + Math.max(right[0], right[1]);
+        ans[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
 
         return ans;
     }
-   
+
     public int rob(TreeNode root) {
         int[] ans = robHouse(root);
         return Math.max(ans[0], ans[1]);
     }
 
-    //6 : 1217. Minimum Cost to Move Chips to The Same Position
+    // 6 : 1217. Minimum Cost to Move Chips to The Same Position
     public int minCostToMoveChips(int[] position) {
-      int even = 0 , odd = 0;
-        for(int i =0;i<position.length ;i++){
-            if(position[i] % 2 ==0){
+        int even = 0, odd = 0;
+        for (int i = 0; i < position.length; i++) {
+            if (position[i] % 2 == 0) {
                 even++;
-            }else{
+            } else {
                 odd++;
             }
         }
-        
-        return Math.min(odd,even);
+
+        return Math.min(odd, even);
     }
 
-    //7 : 1290. Convert Binary Number in a Linked List to Integer
+    // 7 : 1290. Convert Binary Number in a Linked List to Integer
 
-    public int count(ListNode head){
+    public int count(ListNode head) {
         ListNode curr = head;
         int c = -1;
-        while(curr!=null){
+        while (curr != null) {
             c++;
             curr = curr.next;
         }
         return c;
     }
-    
+
     public int getDecimalValue(ListNode head) {
         int count = count(head);
         int res = 0;
         ListNode curr = head;
-        while(count >= 0){
-            if(curr.val == 1){
-                res = res + (int)Math.pow(2, count);
+        while (count >= 0) {
+            if (curr.val == 1) {
+                res = res + (int) Math.pow(2, count);
             }
             count--;
             curr = curr.next;
-           
+
         }
         return res;
 
     }
-    
-    //8 :- 563. Binary Tree Tilt
-    public int[] find(TreeNode root){
-        if(root == null){
+
+    // 8 :- 563. Binary Tree Tilt
+    public int[] find(TreeNode root) {
+        if (root == null) {
             int[] base = new int[2];
             return base;
         }
-        
+
         int[] left = find(root.left);
         int[] right = find(root.right);
         int[] res = new int[2];
         int diff = Math.abs(left[0] - right[0]);
         res[0] = left[0] + right[0] + root.val;
         res[1] = left[1] + right[1] + diff;
-        
+
         return res;
     }
-    
+
     public int findTilt(TreeNode root) {
-        if(root == null) return 0;
+        if (root == null)
+            return 0;
         return find(root)[1];
     }
 
     // 9 :- 1306. Jump Game III :- dfs
-    public boolean Reach(int[] arr, int start,boolean[] vis){
-        if(arr[start] == 0){
+    public boolean Reach(int[] arr, int start, boolean[] vis) {
+        if (arr[start] == 0) {
             return true;
         }
         vis[start] = true;
         boolean flag = false;
-        
+
         int forw = start + arr[start];
         int back = start - arr[start];
-        if(arr.length > forw && !vis[forw]){
-            flag = flag || Reach(arr, forw,vis);
+        if (arr.length > forw && !vis[forw]) {
+            flag = flag || Reach(arr, forw, vis);
         }
-        if(back>=0 && !vis[back]){
-            flag = flag || Reach(arr, back,vis);
+        if (back >= 0 && !vis[back]) {
+            flag = flag || Reach(arr, back, vis);
         }
         vis[start] = false;
         return flag;
     }
-    
+
     public boolean canReach(int[] arr, int start) {
         boolean[] vis = new boolean[arr.length];
-        return Reach(arr,start,vis);
+        return Reach(arr, start, vis);
     }
 
-    //10 :- 790. Domino and Tromino Tiling
+    // 10 :- 790. Domino and Tromino Tiling
     public int numTilings(int n) {
         if (n <= 2) {
             return n;
         }
-        int MOD = (int)1e9 + 7;
+        int MOD = (int) 1e9 + 7;
         long fCurrent = 5;
         long fPrevious = 2;
         long fBeforePrevious = 1;
@@ -304,63 +305,84 @@ public class dec {
         }
         return (int) (fCurrent % MOD);
     }
-    
-    //11 :- 878. Nth Magical Number
-    public int gcd(int a,int b){
-        if(b==0){
+
+    // 11 :- 878. Nth Magical Number
+    public int gcd(int a, int b) {
+        if (b == 0) {
             return a;
         }
-        return gcd(b,a%b);
+        return gcd(b, a % b);
     }
 
-    public int lcm(int a,int b){
-        return (a*b)/gcd(a,b);
+    public int lcm(int a, int b) {
+        return (a * b) / gcd(a, b);
     }
-    
-    public long evaluate(int a,int b, int lcm,long mid){
-        return mid/a + mid/b + mid/lcm;
+
+    public long evaluate(int a, int b, int lcm, long mid) {
+        return mid / a + mid / b + mid / lcm;
     }
-    
+
     public int nthMagicalNumber(int n, int a, int b) {
         long low = 0;
-        long high = (long)1e17;
+        long high = (long) 1e17;
         int lcm = lcm(a, b);
         long res = 0;
-        while(low <= high){
-            long mid = low + (high - low)/2;
-            if(evaluate(a,b,lcm,mid) < n){
+        while (low <= high) {
+            long mid = low + (high - low) / 2;
+            if (evaluate(a, b, lcm, mid) < n) {
                 low = mid + 1;
-            }else{
+            } else {
                 res = mid;
                 high = mid - 1;
             }
         }
-        int mod = (int)1e9+7;
-       return (int)(res % mod);
+        int mod = (int) 1e9 + 7;
+        return (int) (res % mod);
     }
-    
-    //2)416. Partition Equal Subset Sum
-    
-    
-    //13) 1446. Consecutive Characters
+
+    // 2)416. Partition Equal Subset Sum
+
+    // 13) 1446. Consecutive Characters
     public int maxPower(String s) {
-        if(s.length() == 1) return 1;
+        if (s.length() == 1)
+            return 1;
         char pr = s.charAt(0);
         int res = 1;
         int count = 1;
-        for(int i = 1 ;i <s.length() ; i++){
+        for (int i = 1; i < s.length(); i++) {
             char ch = s.charAt(i);
-            if(ch==pr){
+            if (ch == pr) {
                 count++;
-            }else{
+            } else {
                 pr = ch;
                 count = 1;
             }
-            res = Math.max(res,count);
+            res = Math.max(res, count);
         }
         return res;
     }
-    
+
+    // 14)938. Range Sum of BST
+    public void range(TreeNode root, int low, int high, int[] sum) {
+        if (root == null) {
+            return;
+        }
+
+        range(root.left, low, high, sum);
+        if (low <= root.val && high >= root.val) {
+            sum[0] += root.val;
+        }
+        // System.out.println(root.val+" "+sum[0]);
+        range(root.right, low, high, sum);
+    }
+
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        int[] sum = new int[1];
+        range(root, low, high, sum);
+        return sum[0];
+
+    }
+
     public static void main(String[] args) {
 
     }
