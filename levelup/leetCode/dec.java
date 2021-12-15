@@ -363,6 +363,7 @@ public class dec {
     }
 
     // 14)938. Range Sum of BST
+
     public void range(TreeNode root, int low, int high, int[] sum) {
         if (root == null) {
             return;
@@ -381,6 +382,44 @@ public class dec {
         range(root, low, high, sum);
         return sum[0];
 
+    }
+
+    // 147. Insertion Sort List
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        ListNode curr = head.next;
+        ListNode start = head;
+        ListNode prev = head;
+        while (curr != null) {
+            ListNode forw = curr.next;
+            if (prev.val > curr.val) {
+                prev.next = forw;
+                if (start.val > curr.val) {
+                    ListNode ll = new ListNode(curr.val);
+                    ll.next = head;
+                    start = ll;
+                    head = ll;
+                } else {
+                    while (start != prev) {
+                        int val = start.next.val;
+                        if (val > curr.val) {
+                            ListNode ll = new ListNode(curr.val);
+                            ll.next = start.next;
+                            start.next = ll;
+                            start = head;
+                            break;
+                        }
+                        start = start.next;
+                    }
+                }
+            } else {
+                prev = curr;
+            }
+
+            curr = forw;
+        }
+        return head;
     }
 
     public static void main(String[] args) {
