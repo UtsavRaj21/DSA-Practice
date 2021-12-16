@@ -422,6 +422,55 @@ public class dec {
         return head;
     }
 
+    //16) 310. Minimum Height Trees
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        List<Integer> res = new ArrayList<>();
+        if(n==0){
+            return res;
+        }
+
+        if(n==1){
+            res.add(0);
+        }
+
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        
+        int[] degree = new int[n];
+        for(int i=0;i<n;i++){
+            graph.add(new ArrayList<>());
+        }
+
+        for(int[] e : edges){
+            degree[e[0]]++;
+            degree[e[1]]++;
+            graph.get(e[0]).add(e[1]);
+            graph.get(e[1]).add(e[0]);
+        }
+
+        Queue<Integer> que = new LinkedList<>();
+        for(int i =0;i<n;i++){
+            if(degree[i] == 1){
+                que.add(i);
+            }
+        }
+
+        while(n>2){
+            int size = que.size();
+            n-=size;
+            while(size-->0){
+                int val = que.poll();
+                for(int i : graph.get(val)){
+                    degree[i]--;
+                    if(degree[i] == 1){
+                        que.add(i);
+                    }
+                }
+            }
+        }
+
+        res.addAll(que);
+        return res;
+    }
     public static void main(String[] args) {
 
     }
