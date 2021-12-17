@@ -471,6 +471,28 @@ public class dec {
         res.addAll(que);
         return res;
     }
+    //
+    public int maximalSquare(char[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int[][] dp = new int[n+1][m+1];
+        int max = 0;
+        for(int i = 0 ; i <= n ;i++){
+            for(int j = 0 ; j <= m ;j++){
+                if(i==0||j==0){
+                    continue;
+                }
+
+                if(matrix[i-1][j-1] == '1'){
+                    dp[i][j]= Math.min(dp[i-1][j-1], Math.min(dp[i][j-1],dp[i-1][j])) + 1;
+                    max = Math.max(max,dp[i][j]);
+                }
+            }
+        }
+        return max*max;
+    }
+    
     public static void main(String[] args) {
 
     }
