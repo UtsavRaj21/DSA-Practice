@@ -471,7 +471,8 @@ public class dec {
         res.addAll(que);
         return res;
     }
-    //
+   
+    //17) 221. Maximal Square
     public int maximalSquare(char[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
@@ -493,7 +494,90 @@ public class dec {
         return max*max;
     }
     
-    public static void main(String[] args) {
+    //extra:- Longest common substring and common substring
+    public static void find(String input){
+        String[] arr = input.split(" ");
+        int n = arr.length;
+        String str = arr[0];
+        int s = str.length();
+        String res = "";
+        ArrayList<String> al = new ArrayList<>();
+        for(int i = 0 ; i < s ;i++){
+            for(int j = i+1 ; j <=s ;j++){
+                String ss = str.substring(i,j);
 
+                int k =1;
+                for(int p = 1 ; p < n ; p++){
+                    if(!arr[p].contains(ss)){
+                        break;
+                    }
+                    k++;
+                }
+                if(k==n && ss.length() >=3){
+                    if(res.length() <= ss.length()){
+                        if(res.length() == ss.length() && res.compareTo(ss) < 0){
+                            if(!al.contains(ss)){
+                                al.add(ss);
+                            }
+                            
+                        }else{
+                            al.add(res);
+                            res = ss;
+                        }
+                        
+                    }else{
+                        if(!al.contains(ss)){
+                            al.add(ss);
+                        }
+                        
+                    }
+                }
+            }
+        }
+
+        if(res.length() == 0){
+            System.out.println("No ");
+        }else{
+            System.out.println("Longest Common Substring : "+res);
+            if(al.size()>1){
+                System.out.print("Common Substring : ");
+                Collections.sort(al);
+                for(String sb : al){
+                    System.out.print(sb+" ");
+                }
+            }
+        }
+    }
+    
+    //18)
+    public int atMostNGivenDigitSet(String[] digits, int n) {
+        String num = String.valueOf(n);
+        int count = 0;
+        for(int i = 1 ; i < num.length() ;i++){
+            count+=Math.pow(digits.length, i);
+        }
+
+        int i = 0;
+        while(i<num.length()){
+            int j =0;
+            while(j<digits.length && num.charAt(i)-'0' > Integer.parseInt(digits[j])){
+                count+=Math.pow(digits.length,num.length()-i-1);
+                j++;
+            }
+
+            if(j==digits.length || Integer.parseInt(digits[j]) > num.charAt(i) - '0'){
+                break;
+            }
+            i++;
+        }
+
+        if(i==num.length()){
+            count++;
+        }
+        return count;
+    }
+    
+    public static void main(String[] args) {
+        find("hel hello hellow");
     }
 }
