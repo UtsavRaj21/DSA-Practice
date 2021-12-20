@@ -601,6 +601,33 @@ public class dec {
     	}
     	return buf.toString();
     }
+
+    //1200. Minimum Absolute Difference
+     public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        Arrays.sort(arr);
+        long min = (long)1e16;
+        List<List<Integer>> res = new ArrayList<>();
+
+        for(int i = 0 ; i < arr.length-1 ;i++){
+            long diff = Math.abs(arr[i]-arr[i+1]);
+            if(diff == min){
+                ArrayList<Integer> base = new ArrayList<>();
+                base.add(arr[i]);
+                base.add(arr[i+1]);
+                res.add(base);
+            }
+            if(diff < min){
+                min = diff;
+                res.clear();
+                ArrayList<Integer> base = new ArrayList<>();
+                base.add(arr[i]);
+                base.add(arr[i+1]);
+                res.add(base);
+            }
+        }
+
+        return res;
+    }
     
     public static void main(String[] args) {
         find("hel hello hellow");
