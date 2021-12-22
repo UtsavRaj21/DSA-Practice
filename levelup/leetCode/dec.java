@@ -629,6 +629,59 @@ public class dec {
         return res;
     }
     
+    // 22)
+
+    public ListNode reverse(ListNode head){
+        ListNode curr = head;
+        ListNode prev = null;
+        while(curr!=null){
+            ListNode forw = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = forw;
+        }
+        return prev;
+    }
+    
+    public ListNode mid(ListNode head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+    
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null ||head.next.next == null){
+            return;
+        }
+        ListNode mid = mid(head);
+        ListNode nhead = mid.next;
+        mid.next = null;
+
+        nhead = reverse(nhead);
+
+        ListNode h1  = head,h2 = nhead;
+        while(h2!=null){
+            ListNode forw1 = h1.next;
+            ListNode forw2 = h2.next;
+
+            h1.next = h2;
+            h2.next = forw1;
+
+            h1 = forw1;
+            h2 = forw2;
+
+        }
+
+
+    }
     public static void main(String[] args) {
         find("hel hello hellow");
     }
