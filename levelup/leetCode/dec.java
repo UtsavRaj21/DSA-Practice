@@ -602,7 +602,7 @@ public class dec {
     	return buf.toString();
     }
 
-    //1200. Minimum Absolute Difference
+    //20) 1200. Minimum Absolute Difference
      public List<List<Integer>> minimumAbsDifference(int[] arr) {
         Arrays.sort(arr);
         long min = (long)1e16;
@@ -629,8 +629,9 @@ public class dec {
         return res;
     }
     
-    // 22)
+    //21) power of two
 
+    // 22)143. Reorder List 
     public ListNode reverse(ListNode head){
         ListNode curr = head;
         ListNode prev = null;
@@ -682,6 +683,60 @@ public class dec {
 
 
     }
+    
+    //
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        if(numCourses == 1){
+            int[] base = {0};
+            return base;
+        }
+        ArrayList<Integer>[] graph = new ArrayList[numCourses];
+        for(int i = 0 ;i < numCourses ; i++){
+            graph[i] = new ArrayList<>();
+        }
+        int[] inOrder = new int[numCourses];
+        for(int[] e : prerequisites){
+            graph[e[1]].add(e[0]);
+            inOrder[e[0]]++;
+        }
+
+        LinkedList<Integer> que = new LinkedList<>();
+
+        for(int i = 0 ; i < numCourses ; i++){
+            if(inOrder[i] == 0){
+                que.addLast(i);
+            }
+        }
+
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        while(que.size()>0){
+            int s = que.size();
+            while(s-->0){
+                int vtx = que.removeFirst();
+                ans.add(vtx);
+                for(int ele : graph[vtx]){
+                    inOrder[ele]--;
+                    if(inOrder[ele] == 0){
+                        
+                        que.addLast(ele);
+                    }
+                }
+            }
+        }
+
+        if(ans.size() == 0 || ans.size() != numCourses){
+            return new int[0];
+        }
+
+        int[] res = new int[numCourses];
+        for(int i = 0 ; i <numCourses ;i++){
+            res[i] = ans.get(i);
+        }
+        return res;
+    }
+    
+    
     public static void main(String[] args) {
         find("hel hello hellow");
     }
