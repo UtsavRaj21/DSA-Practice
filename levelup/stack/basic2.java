@@ -38,9 +38,42 @@ public class basic2 {
     }
 
     //456. 132 Pattern
-    // public boolean find132pattern(int[] nums) {
+    public boolean find132pattern(int[] nums) {
+        int n =nums.length;
+        int[] arrMin = new int[n];
+        arrMin[0] = nums[0];
+        for(int i = 1 ; i < n ; i++){
+            arrMin[i] = Math.min(nums[i],arrMin[i-1]);
+        }
+
+        Stack<Integer> st = new Stack<>();
         
-    // }
+        for(int i = n-1;i>0;i--){
+            while(st.size()>0 && st.peek() <= arrMin[i]){
+                st.pop();
+            }
+
+            if(st.size() > 0 && st.peek() < nums[i]){
+                return true;
+            }
+
+            st.push(nums[i]);
+        }
+        return false;
+
+    }
+
+    //21 ) 231. Power of Two
+
+    public boolean isPowerOfTwo(int n) {
+        if(n <= 0) return false;
+        int rsb = n & -n;
+        if(n-rsb == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     //735. Asteroid Collision
     public int[] asteroidCollision(int[] asteroids) {
@@ -109,6 +142,298 @@ public class basic2 {
         return sb.toString() ;
 
     }
+    
+    //316. Remove Duplicate Letters
+    public String removeDuplicateLetters(String s) {
+        HashMap<Character,Integer> fmap = new HashMap<>();   // frequency map
+        HashMap<Character,Boolean> pmap = new HashMap<>();   // presence map
+
+        for(int i = 0 ; i < s.length() ; i++){
+            char ch = s.charAt(i);
+            int p = fmap.getOrDefault(ch,0);
+            fmap.put(ch, p + 1);
+        }
+
+        LinkedList<Character> st = new LinkedList<>();
+
+        for(int i = 0 ; i < s.length() ; i++){
+            char ch = s.charAt(i);
+            int fq = fmap.get(ch);
+            fmap.put(ch, fq-1);
+
+            if(pmap.containsKey(ch) == true && pmap.get(ch)==true) continue;
+
+            while(st.size() > 0 && st.getLast()>ch && fmap.get(st.getLast()) > 0){
+                char rch = st.removeLast();
+                pmap.put(rch, false);
+            }
+            st.addLast(ch);
+            pmap.put(ch,true);
+        }
+        StringBuilder sb = new StringBuilder();
+        for(char ch : st){
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
+   
+    public static String reverseWord(String str)
+    {
+        StringBuilder sb = new StringBuilder(str);
+        sb.reverse();
+        return sb.toString();
+    }
+    
+    //***************************************************************************************** */
+    
+    //42. Trapping Rain Water
+
+    //Using Stack
+    public int trap(int[] height) {
+        int n = height.length;
+        Stack<Integer> st = new Stack<>();
+        st.add(0);
+        int count = 0;
+        for(int i = 1 ;i < n ; i++){
+            int val = height[i];
+            while(st.size()>1 && height[st.peek()] < val){
+                int htIdx = st.pop();
+                int htVal = height[htIdx];
+                if(st.size()>0){
+                    int rmax = val;
+                    int rIdx = i;
+                    int lidx = st.peek();
+                    int lmax = height[lidx];
+
+                    int width = rIdx - lidx - 1;
+                    int amount = Math.min(rmax,lmax) - htVal;
+                    count+= (amount * width);
+                }
+                
+
+            }
+            st.add(i);
+        }
+        return count;
+    }
+    
+    //Two Pointer
+    public int trap(int[] height) {
+        int n = height.length;
+        int count = 0;
+        int i = 0 ;
+        int j = n-1;
+        int lmax = height[i];
+        int rmax = height[j];
+        while(i<j){
+            lmax = Math.max(lmax, height[i]);
+            rmax = Math.max(rmax, height[j]);
+            if(lmax < rmax){
+                count+=(lmax - height[i]);
+                i++;
+            }else{
+                count+= (rmax - height[j]);
+                j--;
+            }
+        }
+        return count;
+    }
+    
+    //407. Trapping Rain Water II
+
+    private class trwHelper implements Comparable<trwHelper>{
+        int r;
+        int c;
+        int ht;
+        public trwHelper(int r, int c, int ht){
+            this.r = r;
+            this.c = c;
+            this.ht = ht;
+        }
+
+        public int compareTo(trwHelper o){
+            return this.ht - o.ht;
+        }
+    }
+
+    public void addBoundary(int n , int m,int[][] htm , boolean[][] vis , PriorityQueue<trwHelper> pq){
+        //top
+
+        for(int c = 0 ; c < m ; c++){
+            if(!vis[0][c]){
+                pq.add(new trwHelper(0, c, htm[0][c]));
+                vis[0][c] = true;
+            }
+        }
+
+        //right
+
+        for(int r = 0 ; r < n ; r++){
+            if(!vis[r][m-1]){
+                pq.add(new trwHelper(r, m-1, htm[r][m-1]));
+                vis[r][m-1] = true;
+            }
+        }
+
+        //bottom
+
+        for(int c = 0 ; c < m ; c++){
+            if(!vis[n-1][c]){
+                pq.add(new trwHelper(n-1, c, htm[n-1][c]));
+                vis[n-1][c] = true;
+            }
+        }
+
+        //left
+        for(int r = 0 ; r < n ; r++){
+            if(!vis[r][0]){
+                pq.add(new trwHelper(r, 0, htm[r][0]));
+                vis[r][0] = true;
+            }
+        }
+    }
+
+    public int trapRainWater(int[][] htm) {
+        int[][] dir = {{1,0},{-1,0},{0,1},{0,-1}};
+        int n = htm.length;
+        int m = htm[0].length;
+        boolean[][] vis = new boolean[n][m];
+        PriorityQueue<trwHelper> pq = new PriorityQueue<>();
+
+        addBoundary(n,m,htm,vis,pq);
+        int water  = 0;
+
+        while(pq.size()>0){
+            trwHelper rem = pq.remove();
+            for(int d = 0 ; d < dir.length ; d++){
+                int r = rem.r + dir[d][0];
+                int c = rem.c + dir[d][1];
+
+                if(r>=0 && r<n && c>=0 && c<m && !vis[r][c]){
+                    vis[r][c] = true;
+                    if(htm[r][c] < rem.ht){
+                        water += (rem.ht - htm[r][c]);
+                        pq.add(new trwHelper(r, c, rem.ht));
+                    }else{
+                        pq.add(new trwHelper(r, c, htm[r][c]));
+                    }
+                }
+            }
+            
+        }
+        return water;
+    }
+
+    //************************************************************************************************* */
+
+    //*************************************************************************************************
+
+    //224. Basic Calculator
+
+    public int calculate(String s) {
+        int n = s.length();
+        int sum = 0 ;
+        Stack<Integer> st = new Stack<>();
+        int sign = 1;
+        for(int i = 0 ; i < n ; i++){
+            char ch = s.charAt(i);
+            if(ch==' '){
+                continue;
+            }else if(ch>='0' &&ch <= '9'){
+                long num = 0;
+                while(i<n && s.charAt(i) >='0' && s.charAt(i) <='9'){
+                    num*=10;
+                    num+=s.charAt(i)-'0';
+                    i++;
+                }
+                i--;
+                num = sign*num;
+                sum+=num;
+                sign = 1;
+            }else if(ch=='('){
+                st.push(sum);
+                st.push(sign);
+                sum=0;
+                sign=1;
+            }else if(ch==')'){
+                int si = sum*st.pop();
+                int v = st.pop();
+                sum = si+v;
+            }else if(ch=='-'){
+                sign*=-1;
+            }else{
+                //dont do any thing 
+            }   
+        }
+        return sum;
+    }
+    
+    // 227. Basic Calculator II
+    
+     public int evaluate(int val1, int val2, int oper) {
+        int val = 0;
+
+        if (oper == '*') {
+            val = val1 * val2;
+        } else if (oper == '/') {
+            val = val1 / val2;
+        } else if (oper == '+') {
+            val = val1 + val2;
+        } else if (oper == '-') {
+            val = val1 - val2;
+        }
+        return val;
+    }
+
+    public int priority(char ch) {
+        if (ch == '*' || ch == '/') {
+            return 2;
+        } else if (ch == '+' || ch == '-') {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int calculate2(String s) {
+       Stack<Integer> vStack = new Stack<>();
+       Stack<Character> oStack = new Stack<>();
+        int n = s.length();
+        for(int i = 0 ; i < n ; i++){
+            char ch = s.charAt(i);
+            if(ch==' '){
+                continue;
+            }else if(ch>='0' && ch<='9'){
+                int j = i;
+                StringBuilder sb= new StringBuilder();
+                while(j<n && s.charAt(j) >= '0' && s.charAt(j) <='9'){
+                    sb.append(s.charAt(j));
+                    j++;
+                }
+                i = j-1;
+                vStack.push(Integer.parseInt(sb.toString()));
+            }else{
+                while(oStack.size()>0 && (priority(oStack.peek()) >= priority(ch))){
+                    char c = oStack.pop();
+                    int val2 = vStack.pop();
+                    int val1 = vStack.pop();
+                    int val = evaluate(val1, val2, c);
+                    vStack.push(val);
+                }
+                oStack.push(ch);
+            }
+        }
+        while(oStack.size()>0 ){
+            char c = oStack.pop();
+            int val2 = vStack.pop();
+            int val1 = vStack.pop();
+            int val = evaluate(val1, val2, c);
+            vStack.push(val);
+        }
+
+        return vStack.peek();
+    }
+
+    //********************************************************************************************** */
     
     public static void main(String[] args) {
         
