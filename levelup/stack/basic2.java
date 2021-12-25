@@ -177,8 +177,7 @@ public class basic2 {
         return sb.toString();
     }
    
-    public static String reverseWord(String str)
-    {
+    public static String reverseWord(String str){
         StringBuilder sb = new StringBuilder(str);
         sb.reverse();
         return sb.toString();
@@ -370,7 +369,7 @@ public class basic2 {
     
     // 227. Basic Calculator II
     
-     public int evaluate(int val1, int val2, int oper) {
+    public int evaluate(int val1, int val2, int oper) {
         int val = 0;
 
         if (oper == '*') {
@@ -435,7 +434,207 @@ public class basic2 {
 
     //********************************************************************************************** */
     
-    public static void main(String[] args) {
+    //Number Of Valid Subarrays
+    public static int validSubarrays(int[] nums) {
+        int count = 0;
+        int n = nums.length;
+        Stack<Integer> st = new Stack<>();
+        int[] nser = new int[n];
+        for(int i = 0 ; i < n ; i++){
+            int val = nums[i];
+            while(st.size() > 0 && nums[st.peek()] > val){
+                nser[st.pop()] = i;
+            }
+            st.push(i);
+        }
+
+        while(st.size()> 0){
+            nser[st.pop()] = n;
+        }
+        //take contribution
+        for(int i = 0 ; i < n ; i++){
+            count+=(nser[i] - i);
+        }
+        return count;
+    }
+    
+    //Lexicographically Smallest Subsequence
+    public static int[] smallest(int[] nums, int K) {
+        Stack<Integer> st = new Stack<>();
+        int n = nums.length;
+        int k = n-K;
+
+        for(int i = 0 ; i < n ; i++){
+            while(k>0 && nums[st.peek()] > nums[i]){
+                st.pop();
+                k--;
+            }
+        }
+
+        while(k>0){
+            st.pop();
+        }
+        int[] res = new int[st.size()];
+        for(int i = res.length-1;i>=0 ;i--){
+            res[i] = st.pop();
+        }
+
+        return res;
+     }
+    
+    //Design A Stack With Increment Operation
+    //1: void push(int x) Adds x to the top of the stack if the stack 
+    //        hasn't reached the maxSize.
+    //2: int pop() Pops and returns the top of stack or -1 if the stack is empty.
+    //3: void inc(int k, int val) Increments the bottom k elements of the stack
+    //         by val. If there are less than k elements in the stack, just 
+    //         increment all the elements in the stack.
+    public static class CustomStack {
+    
+        int value[];
+        int increment[];
+        int index;
+        
+        public CustomStack(int maxSize) {
+            value = new int[maxSize];
+            increment = new int[maxSize];
+            index=-1;
+        }
+        
+        public void push(int x) {
+            // complete this function
+            if(index+1<value.length){
+                index++;
+                value[index] = x;
+            }
+        }
+        
+        public int pop() {
+            // complete this function
+            if(index == -1){
+                return -1;
+            }
+            int r = value[index] + increment[index];
+            if(index>0){
+                increment[index-1] += increment[index];
+            }
+            increment[index] = 0;
+            index--;
+            return r;
+        }
+        
+        public void increment(int k, int val) {
+            if(index == -1) return;
+            if(k>index){
+                increment[index]+=val;
+            }else{
+                increment[k-1] += val;
+            }
+        } 
+    }
+    
+    //641. Design Circular Deque
+    class MyCircularDeque {
+
+        private class Node{
+            int data;
+            Node next;
+
+            public Node(int data){
+                this.data = data;
+            }
+        }
+
+        int size;
+        int limit;
+        Node head = null;
+        Node tail = null;
+        
+        public MyCircularDeque(int k) {
+            this.limit = k;
+            this.size = 0;
+        }
+        
+        public boolean insertFront(int value) {
+            if(this.limit == this.size) return false;
+            if(this.size == 0){
+                head = tail = new Node(value);
+               
+            }else{
+                Node nn = new Node(value);
+                nn.next = head ;
+                head = nn;
+            }
+            this.size++;
+            return true;
+        }
+        
+        public boolean insertLast(int value) {
+            if(this.limit == this.size) return false;
+            if(this.size == 0){
+                head = tail = new Node(value);
+               
+            }else{
+                Node nn = new Node(value);
+                tail.next = nn ;
+                tail = nn;
+            }
+            this.size++;
+            return true;
+        }
+        
+        public boolean deleteFront() {
+            if(this.size == 0){
+                return false;
+            }
+            if(this.size == 1){
+                this.head = this.tail = null;
+            }else{
+                this.head = this.head.next;
+            }
+            this.size--;
+            return true;
+        }
+        
+        public boolean deleteLast() {
+            if(this.size == 0){
+                return false;
+            }
+            if(this.size == 1){
+                this.head = this.tail = null;
+            }else{
+                Node nn = head;
+                while(nn.next!=this.tail){
+                    nn = nn.next;
+                }
+                nn.next = null;
+                this.tail = nn;
+            }
+            this.size--;
+            return true;
+        }
+        
+        public int getFront() {
+            if(this.size == 0) return -1;
+            return head.data;
+        }
+        
+        public int getRear() {
+            if(this.size == 0) return -1;
+            return tail.data;
+        }
+        
+        public boolean isEmpty() {
+            return this.size == 0;
+        }
+        
+        public boolean isFull() {
+            return this.limit == this.size;
+        }
+    }
+    
+    
+     public static void main(String[] args) {
         
     }
 }
