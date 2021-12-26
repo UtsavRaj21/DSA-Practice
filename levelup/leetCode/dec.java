@@ -684,7 +684,7 @@ public class dec {
 
     }
     
-    //
+    // Course -2 (graph)
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         if(numCourses == 1){
             int[] base = {0};
@@ -764,6 +764,43 @@ public class dec {
         return ans.toArray(new int[ans.size()][]);
     }
     
+    //25)
+
+    //26)973. K Closest Points to Origin
+    private class ClosestPair implements Comparable<ClosestPair>{
+        int r;
+        int c;
+        int sqrt;
+        public ClosestPair(int r , int c , int sqrt){
+            this.r  = r;
+            this.c = c;
+            this.sqrt = sqrt;
+        }
+
+        public int compareTo(ClosestPair o){
+            return this.sqrt - o.sqrt;
+        }
+    }
+    public int[][] kClosest(int[][] points, int k) {
+        PriorityQueue<ClosestPair> que = new PriorityQueue<>();
+        for(int[] p : points){
+            int sqrt = (p[0]*p[0]) + (p[1]*p[1]);
+            que.add(new ClosestPair(p[0], p[1], sqrt));
+        }
+
+        int[][] res = new int[k][2];
+        int idx =0;
+        while(k-->0){
+            ClosestPair rem = que.remove();
+            res[idx][0] = rem.r;
+            res[idx][1] = rem.c;
+            idx++;
+        }
+
+        return res;
+
+    }
+
     public static void main(String[] args) {
         find("hel hello hellow");
     }
