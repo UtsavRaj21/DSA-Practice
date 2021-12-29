@@ -828,6 +828,53 @@ public class dec {
         }
         return slow;
     }
+    
+    //116. Populating Next Right Pointers in Each Node
+    class Node {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+    
+        public Node() {}
+        
+        public Node(int _val) {
+            val = _val;
+        }
+    
+        public Node(int _val, Node _left, Node _right, Node _next) {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    };
+    public Node connect(Node root) {
+        if(root == null) return root;
+        LinkedList<Node> que = new LinkedList<>();
+        //int limit= 1;
+        que.add(root);
+        while(que.size()>0){
+            int s = que.size();
+            while(s-->0){
+                Node rNode = que.removeFirst();
+                if(s==0){
+                    rNode.next = null;
+                }else{
+                    rNode.next = que.getFirst();
+                }
+
+                if(rNode.left != null){
+                    que.addLast(rNode.left);
+                }
+                if(rNode.right != null){
+                    que.addLast(rNode.right);
+                }
+
+            }
+        }
+        return root;
+    }
     public static void main(String[] args) {
         find("hel hello hellow");
     }
