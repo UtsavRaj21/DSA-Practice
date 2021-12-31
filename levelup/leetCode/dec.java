@@ -892,6 +892,49 @@ public class dec {
 
         return -1;
     }
+
+    //1026. Maximum Difference Between Node and Ancestor
+    int res = 0;
+    public int[] diff(TreeNode root){
+        if(root == null){
+            int[] base = {(int)1e9,-(int)1e9};
+            return base;
+        }
+
+        int[] left = diff(root.left);
+        int[] right = diff(root.right);
+
+        int ans[] = new int[2];
+        
+        if(left[0] != (int)1e9){
+            res = Math.max(res,Math.abs(root.val - left[0]));
+        }
+        if(left[1] != -(int)1e9){
+            res = Math.max(res,Math.abs(root.val - left[1]));
+        }
+        if(right[0] != (int)1e9){
+            res = Math.max(res,Math.abs(root.val - right[0]));
+        }
+        if(right[1] != -(int)1e9){
+            res = Math.max(res,Math.abs(root.val - right[1]));
+        }
+        
+         
+
+         ans[1] = Math.max(root.val,Math.max(left[1],right[1]));
+         ans[0] = Math.min(root.val,Math.min(left[0],right[0]));
+
+        
+         return ans;
+
+    }
+    
+    public int maxAncestorDiff(TreeNode root) {
+        if(root == null) return 0;
+        diff(root);
+        return res;
+    }
+
     public static void main(String[] args) {
         find("hel hello hellow");
     }
