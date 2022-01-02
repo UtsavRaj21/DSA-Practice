@@ -935,7 +935,12 @@ public class dec {
         return res;
     }
 
+    
     public static void main(String[] args) {
-        find("hel hello hellow");
+        //find("hel hello hellow");
+        ArrayList<Integer> al = new ArrayList<>();
+        al.add(1);
+        al.add(2);
+        System.out.println(al);
     }
 }
