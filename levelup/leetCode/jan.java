@@ -27,7 +27,9 @@ public class jan {
         return count;
 
         //997. Find the Town Judge
-         public int findJudge(int n, int[][] trust) {
+         
+    //
+     public int findJudge(int n, int[][] trust) {
             if(n ==  1 && trust.length == 0) return 1;
             HashMap<Integer,Integer> map = new HashMap<>();
              HashSet<Integer> set = new HashSet<>();
@@ -54,7 +56,42 @@ public class jan {
                  return -1;
         }
     
+    //1009. Complement of Base 10 Integer
+    public int bitwiseComplement(int n) {
+        String str=Integer.toBinaryString(n);
+        StringBuilder sb=new StringBuilder(str);
+        StringBuilder sb1=new StringBuilder();
+        for(int i=0;i<sb.length();i++){
+            if(sb.charAt(i)=='0')
+                sb1.append("1");
+            else
+                sb1.append("0");
+            }
+        int res=Integer.parseInt(sb1.toString(),2);
+        return res;
+    }
+    
+    //131. Palindrome Partitioning
+    public List<List<String>> partition(String s) {
+        int len = s.length();
+        boolean[][] dp = new boolean[len][len];
+        List<List<String>> result = new ArrayList<>();
+        dfs(result, s, 0, new ArrayList<>(), dp);
+        return result;
+    }
 
+    void dfs(List<List<String>> result, String s, int start, List<String> currentList, boolean[][] dp) {
+        if (start >= s.length()) result.add(new ArrayList<>(currentList));
+        for (int end = start; end < s.length(); end++) {
+            if (s.charAt(start) == s.charAt(end) && (end - start <= 2 || dp[start + 1][end - 1])) {
+                dp[start][end] = true;
+                currentList.add(s.substring(start, end + 1));
+                dfs(result, s, end + 1, currentList, dp);
+                currentList.remove(currentList.size() - 1);
+            }
+        }
+    }
+    
     public static void main(String[] args) {
 
     }
