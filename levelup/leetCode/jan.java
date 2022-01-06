@@ -92,6 +92,44 @@ public class jan {
         }
     }
     
+    //
+    public boolean carPooling(int[][] trips, int capacity) {
+        Arrays.sort(trips,(a,b)->{
+            return a[1] - b[1];
+        });
+        int num =0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        HashMap<Integer,Integer> map = new HashMap<>();
+        int i = 0;
+        while(i < trips.length){
+            if(pq.size()==0){
+                num+=trips[i][0];
+                map.put(trips[i][2] , trips[i][0]);
+                pq.add(trips[i][2]);
+                i++;
+            }else if(pq.peek() <= trips[i][1]){
+                int rem = pq.peek();
+                num = num - map.get(pq.peek());
+                pq.remove();
+                map.remove(rem);
+            }else{
+                num += trips[i][0];
+                if(map.containsKey(trips[i][2])){
+                    map.put(trips[i][2] , map.get(trips[i][2]) + trips[i][0]);
+                }else{
+                    map.put(trips[i][2] , trips[i][0]);
+                    pq.add(trips[i][2]);
+                }
+                i++;
+            }
+            System.out.println(num);
+            if(num > capacity){
+                return false;
+            }
+        }
+
+        return  true;
+    }
     public static void main(String[] args) {
 
     }
