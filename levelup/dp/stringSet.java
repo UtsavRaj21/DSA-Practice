@@ -48,7 +48,7 @@ public class stringSet {
              if(s.charAt(i)!=s.charAt(j)){
                  dp[i][j] =Math.max(dp[i+1][j],dp[i][j-1]); // Math.max(longestPalindrome_memo(s,i+1,j,dp),longestPalindrome_memo(s,i,j-1,dp));
              }else{
-                  dp[i][j] = dp[i+1][j-1];//longestPalindrome_memo(s,i+1,j-1,dp)+2;
+                  dp[i][j] = dp[i+1][j-1] + 2;//longestPalindrome_memo(s,i+1,j-1,dp)+2;
              }
           }
         }

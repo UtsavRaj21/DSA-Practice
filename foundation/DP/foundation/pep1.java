@@ -292,63 +292,63 @@ public class pep1 {
         int inc = arr[0];
         int exc = 0;
 
-        for(int i = 1 ; i < n ;i++){
+        for (int i = 1; i < n; i++) {
             int ninc = exc + arr[i];
-            int nexc = Math.max(inc,exc);
+            int nexc = Math.max(inc, exc);
 
             inc = ninc;
-            exc =nexc;
+            exc = nexc;
         }
-        System.out.println(Math.max(inc,exc)) ;
+        System.out.println(Math.max(inc, exc));
 
     }
 
-    //Friends Pairing
-    public static void Pairing(int n){
-        int[] dp = new int[n+1];
-        if(n<3){ 
+    // Friends Pairing
+    public static void Pairing(int n) {
+        int[] dp = new int[n + 1];
+        if (n < 3) {
             System.out.println(n);
         }
         dp[0] = 0;
         dp[1] = 1;
         dp[2] = 2;
-        for(int i = 3 ; i <= n ;i++ ){
-            dp[i] = dp[i-1] + (i-1)*dp[i-2];
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + (i - 1) * dp[i - 2];
         }
 
         System.out.println(dp[n]);
     }
-    
-    //Paint House :- NO Consecutive color
-    public static void PaintHouse(int n,int[] red,int[] blue,int[] green){
+
+    // Paint House :- NO Consecutive color
+    public static void PaintHouse(int n, int[] red, int[] blue, int[] green) {
         int r = red[0];
         int b = blue[0];
         int g = green[0];
 
-        for(int i = 1;i<n;i++){
-            int nr = red[i] + Math.min(b,g);
-            int nb = blue[i] + Math.min(r,g);
-            int ng = green[i] + Math.min(b,r);
+        for (int i = 1; i < n; i++) {
+            int nr = red[i] + Math.min(b, g);
+            int nb = blue[i] + Math.min(r, g);
+            int ng = green[i] + Math.min(b, r);
 
             r = nr;
             b = nb;
             g = ng;
         }
-        System.out.println(Math.min(r,Math.min(b,g)));
+        System.out.println(Math.min(r, Math.min(b, g)));
     }
-    
-    //Paint House - Many Colors  :- NO Consecutive color
-    public static void PaintColorManyHouse(int n,int c,int[][] arr){
+
+    // Paint House - Many Colors :- NO Consecutive color
+    public static void PaintColorManyHouse(int n, int c, int[][] arr) {
         int small = Integer.MAX_VALUE;
         int nsmall = Integer.MAX_VALUE;
         int[][] dp = new int[n][c];
 
-        for(int j = 0 ; j < c ;j++){
+        for (int j = 0; j < c; j++) {
             dp[0][j] = arr[0][j];
-            if(small > arr[0][j]){
+            if (small > arr[0][j]) {
                 nsmall = small;
                 small = arr[0][j];
-            }else if(nsmall > arr[0][j]){
+            } else if (nsmall > arr[0][j]) {
                 nsmall = arr[0][j];
             }
         }
@@ -356,22 +356,21 @@ public class pep1 {
         // System.out.println(small);
         // System.out.println(nsmall);
 
-
-        for(int i = 1 ; i < n ; i++){
+        for (int i = 1; i < n; i++) {
             int s = Integer.MAX_VALUE;
             int ns = Integer.MAX_VALUE;
-            for(int j = 0; j< c ;j++){
+            for (int j = 0; j < c; j++) {
                 int val = 0;
-                if(dp[i-1][j] == small){
+                if (dp[i - 1][j] == small) {
                     val = arr[i][j] + nsmall;
-                }else{
+                } else {
                     val = arr[i][j] + small;
                 }
                 dp[i][j] = val;
-                if(s > val){
+                if (s > val) {
                     ns = s;
                     s = val;
-                }else if(ns > val){
+                } else if (ns > val) {
                     ns = val;
                 }
             }
@@ -381,77 +380,75 @@ public class pep1 {
 
         System.out.println(small);
     }
-    
-    //Paint Fence :- not more than two consecutive  fences have same colors.
-    public static void PaintFence(int n, int c){
-       int same = c*1;
-       int diff = c * (c-1);
-       int sum = same + diff ;
 
-       for(int i = 3 ; i <= n ;i++){
-           same = diff*1;
-           diff = sum*(c-1);
-           sum = same + diff;
-       }
+    // Paint Fence :- not more than two consecutive fences have same colors.
+    public static void PaintFence(int n, int c) {
+        int same = c * 1;
+        int diff = c * (c - 1);
+        int sum = same + diff;
+
+        for (int i = 3; i <= n; i++) {
+            same = diff * 1;
+            diff = sum * (c - 1);
+            sum = same + diff;
+        }
 
         System.out.println(sum);
     }
-   
-    //Partition Into Subsets            
+
+    // Partition Into Subsets
     public static long partitionKSubset(int n, int k) {
-        long[][] dp = new long[k+1][n+1];
-        for(int i = 0 ; i <dp.length ;i++){
-            for(int j = 0 ; j < dp[0].length ;j++){
-                if(i==0||j==0){
+        long[][] dp = new long[k + 1][n + 1];
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                if (i == 0 || j == 0) {
                     dp[i][j] = 0;
-                }else if(i==j){
+                } else if (i == j) {
                     dp[i][j] = 1;
-                }else if(j>i){
-                    dp[i][j] = dp[i-1][j-1] + (i) * dp[i][j-1];
+                } else if (j > i) {
+                    dp[i][j] = dp[i - 1][j - 1] + (i) * dp[i][j - 1];
                 }
             }
         }
 
         return dp[k][n];
     }
-    
-    //Buy And Sell Stocks - Infinite Transactions Allowed
-    public static void InfiniteTransaction(int n,int[] arr){
+
+    // Buy And Sell Stocks - Infinite Transactions Allowed
+    public static void InfiniteTransaction(int n, int[] arr) {
         int profit = 0;
         int sd = 0;
         int bd = 0;
 
-        for(int i = 1 ; i < n ;i++){
-            if(arr[i] >= arr[i-1]){
+        for (int i = 1; i < n; i++) {
+            if (arr[i] >= arr[i - 1]) {
                 sd++;
-            }else{
-                profit+=arr[sd] - arr[bd];
+            } else {
+                profit += arr[sd] - arr[bd];
                 sd = bd = i;
             }
         }
-        profit+=arr[sd] - arr[bd];
+        profit += arr[sd] - arr[bd];
         System.out.println(profit);
     }
-    //******************* BASS :-Buy And Sell Stocks ******************************************** 
+    // ******************* BASS :-Buy And Sell Stocks
+    // ********************************************
 
-    //Buy And Sell Stocks - One Transaction Allowed
-    public static void oneTransaction(int n,int[] arr){
+    // Buy And Sell Stocks - One Transaction Allowed
+    public static void oneTransaction(int n, int[] arr) {
         int min = Integer.MAX_VALUE;
-        int op = 0;             //overall profit
-        int tp = 0;             // today profit
+        int op = 0; // overall profit
+        int tp = 0; // today profit
 
-        for(int i = 0 ; i < n ;i++){
+        for (int i = 0; i < n; i++) {
             min = Math.min(min, arr[i]);
             tp = arr[i] - min;
-            op = Math.max(op, tp); 
+            op = Math.max(op, tp);
         }
 
         System.out.println(op);
     }
 
-
-
-    
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
         int n = scn.nextInt();
