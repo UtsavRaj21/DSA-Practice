@@ -638,7 +638,6 @@ public class basic1 {
    return count;
 }
 
-
   public static int countSubStringExactlyK(String str, int k) {
    if(k == 1) {
        return handleWhenK1(str);
@@ -703,7 +702,96 @@ public class basic1 {
    }
    return count;
 }
-  public static void main(String[] args) {
+  
+   //Maximum Consecutive Ones - 1 :- Flip one zero
+   public static int MaxConsecutiveOnes(int[] arr){
+         int count0 = 0;
+         int ans = 0;
+         int acq = -1;
+         int rel = -1;
+
+         while(true){
+            boolean acqFlag = false;
+            boolean relFlag = false;
+
+            while(acq < arr.length - 1){
+               acqFlag = true;
+               acq++;
+               int ele = arr[acq];
+               if(ele == 0){
+                  count0++;
+               }
+               if(count0 == 2){
+                  break;
+               }else{
+                  ans = Math.max(ans, acq - rel);
+               }
+            }
+
+            while(rel < acq){
+                relFlag = true;
+                rel++;
+                int ele = arr[rel];
+                if(ele == 0){
+                   count0--;
+                   break;
+                }
+             }
+
+             if(!acqFlag && !relFlag){
+                break;
+             }
+         }
+
+         return ans;
+      }
+
+   //Maximum Consecutive Ones - 1 :- Flip K zero
+   public static int MaxConsecutiveOnes(int[] arr,int k){
+      int count0 = 0;
+      int ans =0;
+      int j = -1;
+      for(int i = 0 ; i < arr.length ;i++){
+         int ele = arr[i];
+         if(ele == 0) count0++;
+
+         while(k<count0){
+            j++;
+            if(arr[j] == 0){
+               count0--;
+            }
+         }
+
+         ans = Math.max(ans, i - j);
+      }
+
+      return ans;
+   }
+  
+   //Largest Subarray With Contiguous Elements
+   public static int LargestSubarrayWithContiguousElements(int[] arr) {
+		int ans = 0;
+
+      for(int i = 0; i < arr.length ; i++){
+         int max= arr[i];
+         int min = arr[i];
+         HashSet<Integer> set = new HashSet<>();
+         for(int j = i ; j < arr.length; j++){
+            if(set.contains(arr[j])){
+               break;
+            }
+            set.add(arr[j]);
+            min = Math.min(min, arr[j]);
+            max = Math.max(max, arr[j]);
+
+            if(max - min == j-i){
+               ans = Math.max(ans , j-i+1);
+            }
+         }
+      }
+      return ans;
+	}
+public static void main(String[] args) {
 
    }
 }

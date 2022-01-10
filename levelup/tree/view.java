@@ -227,8 +227,7 @@ public class view {
         }
     }
     
-    public static void diagonal_1(TreeNode root)
-      {
+    public static void diagonal_1(TreeNode root) {
         ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
            if(root == null) return ;
 
@@ -507,9 +506,7 @@ public class view {
             System.out.println(count++ + " -> " + list);
         }
     }
-
-
-
+    
     public static void main(String args[]) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);

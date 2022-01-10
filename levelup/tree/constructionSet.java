@@ -157,9 +157,9 @@ public class constructionSet {
      public static TreeNode inlevel_construct(int[] level,int lsi,int lei,int[] in,int isi,int iei){
          if(level.length == 0) return null;
          TreeNode root = new TreeNode(level[0]);
-       if(level.length == 1){
-           return root;
-       }
+         if(level.length == 1){
+             return root;
+         }
 
        int idx = isi;
        HashMap<Integer,Integer> map = new HashMap<>();
