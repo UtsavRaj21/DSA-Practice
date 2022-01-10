@@ -177,6 +177,30 @@ public class jan {
         return ((x==0 && y==0) || dir !=  'N');
     }
 
+    //67. Add Binary
+    public String addBinary(String a, String b) {
+      StringBuilder sb = new StringBuilder();
+      int i = a.length()-1,j=b.length()-1;
+      int carry = 0;
+      while(i>=0 || j>=0){
+          int aval = i !=-1 ? a.charAt(i--) - '0' : 0;
+          int bval = j !=-1 ? b.charAt(j--) - '0' : 0;
+
+          int sum = aval + bval + carry;
+          carry = sum / 2;
+          int rem = sum % 2;
+          sb.append(rem);
+      }
+      //System.out.println(carry);
+    if(carry > 0){
+        sb.append(1);
+    }
+
+    sb = sb.reverse();
+    
+    return sb.toString();
+    }
+
     public static void main(String[] args) {
 
     }
