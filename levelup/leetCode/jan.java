@@ -217,6 +217,190 @@ public class jan {
         return arrows;
     }
 
+    //849. Maximize Distance to Closest Person
+    public int maxDistToClosest(int[] seats) {
+        int n = seats.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+
+        int p = Integer.MAX_VALUE;
+        boolean flag = false;
+
+        for(int i = 0 ; i  < n ; i++){
+            if(flag == false && seats[i] != 1){
+                left[i] = p;
+            }else if(seats[i] == 1){
+                p=0;
+                left[i] = 0;
+                flag = true;
+            }else{
+                p++;
+                left[i] = p;
+            }
+        }
+
+         p = Integer.MAX_VALUE;
+         flag = false;
+
+        for(int i = n-1 ; i >= 0 ; i--){
+            if(flag == false && seats[i] != 1){
+                right[i] = p;
+            }else if(seats[i] == 1){
+                p=0;
+                right[i] = 0;
+                flag = true;
+            }else{
+                p++;
+                right[i] = p;
+            }
+        }
+
+        int res =0;
+
+        for(int i = 0 ; i < n ; i++){
+            res = Math.max(res,Math.min(left[i],right[i]));
+        }
+
+        return res;
+    }
+
+    //72. Edit Distance
+    static int[][] dp;
+    public int min(String s1,String s2,int i,int j){
+        if(i == 0){
+            dp[i][j] = j;
+            return j;
+        }
+
+        if(j == 0){
+            dp[i][j] = i;
+            return i;
+        }
+
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+
+        if(s1.charAt(i-1) == s2.charAt(j-1)){
+            return dp[i][j] = min(s1,s2,i-1,j-1);
+        }
+
+        int replace = min(s1, s2, i-1, j-1) + 1;
+        int delete = min(s1, s2, i-1, j)+1;
+        int insert = min(s1, s2, i, j-1);
+
+        return dp[i][j] = Math.min(replace,Math.min(insert,delete));
+    }
+    public int minDistance(String word1, String word2) {
+        dp = new int[word1.length()+1][word2.length()+1];
+        for(int[] a : dp){
+            Arrays.fill(a,-1);
+        }
+        return min(word1,word2,word1.length()-1,word2.length()-1);
+    }
+    
+    //
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        for(int i = 0 ; i < s.length() ;i++){
+            char ch = s.charAt(i);
+            if(ch == '('){
+               st.push(ch);
+            }else if(ch == ')'){
+               if(st.size() == 0){
+                   return false;
+               }else if(st.peek() != '('){
+                   return false;
+               }else{
+                   st.pop();
+               }
+            }else if(ch == '['){
+                st.push(ch);
+            }else if(ch == ']'){
+                if(st.size() == 0){
+                    return false;
+                }else if(st.peek() != '['){
+                    return false;
+                }else{
+                    st.pop();
+                }
+            }else if(ch == '{'){
+                st.push(ch);
+            }else{
+                if(st.size() == 0){
+                    return false;
+                }else if(st.peek() != '{'){
+                    return false;
+                }else{
+                    st.pop();
+                }
+            }
+        }
+
+        return st.size() == 0;
+    }
+    
+    //139. Word Break
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        boolean[] bdp = new boolean[n+1];
+        int len =0;
+        HashSet<String> map = new HashSet<>();
+        for(String s :wordDict ){
+            len = Math.max(len,s.length());
+            map.add(s);
+        }
+        bdp[0] = true;
+
+        for(int i = 0 ; i < n ;i++){
+            if(!bdp[i]) continue;
+
+            for(int l = 1 ; i+l <= n && l <=len ; l++){
+                if(map.contains(s.substring(i, i+l))) bdp[i+l] = true;
+            }
+        }
+
+        return bdp[n];
+    }
+    
+   //
+   public int coin(int[] coins,int idx,int sum,int[][] dp){
+       if(idx==0 && sum==0){
+           return dp[idx][sum] = 1;
+       }
+       if(idx == 0){
+           return dp[idx][sum] = 0;
+       }
+       if(sum == 0){
+            return dp[idx][sum] = 1;
+       }
+
+       if(dp[idx][sum] != -1){
+           return dp[idx][sum];
+       }
+
+       if(coins[idx - 1] >= sum){
+            return dp[idx][sum] = Math.min(coin(coins,idx-1,sum - coins[idx-1],dp)+1,coin(coins, idx-1, sum, dp));
+       }else{
+            return dp[idx][sum] = coin(coins, idx-1, sum, dp);
+       }
+
+
+   }
+   
+    public int coinChange(int[] coins, int amount){
+        int n = coins.length;
+        int[][] dp = new int[n+1][amount+1];
+
+        for(int[] a : dp){
+            Arrays.fill(a,-1);
+        }
+
+        coin(coins,n,amount,dp);
+
+        return dp[n][amount];
+    }
+    
     public static void main(String[] args) {
 
     }
