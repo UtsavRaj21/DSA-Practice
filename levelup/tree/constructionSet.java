@@ -45,7 +45,7 @@ public class constructionSet {
         return bstFromPreorder(preorder, -(int) 1e9, (int) 1e9);
     }
 
-    public static TreeNode bstFromPostOrder(int[] postOrder, int lr, int rr) {
+    public static TreeNode bstFromPostOrder(int[] postOrder, int lr, int rr) {                                                                                                                                                                                                                                                                                                                                                                                         
         if (idx == -1 || postOrder[idx] < lr || postOrder[idx] > rr)
             return null;
 
@@ -393,6 +393,19 @@ public class constructionSet {
         TreeNode node = inlevel(level,in);
         display(node);
 
+        String str = scn.next();
+        String[] arr = str.split(" ");
+        ListNode head = new ListNode(-1);
+        ListNode curr = head;
+        int n = arr.length;
+        int i=0;
+        while(i<n){
+            curr.next = new ListNode(Integer.valueOf(arr[i]));
+            curr = curr.next;
+            i++; 
+        }
+
+        head = head.next;
         
     }
 }

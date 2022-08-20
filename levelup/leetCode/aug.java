@@ -34,6 +34,34 @@ public class aug{
             return true;
         }
     }
+
+    //871. Minimum Number of Refueling Stops
+    class Solution {
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        if(target <= startFuel){
+            return 0;
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b)->{
+            return b-a;
+        });
+        int i = 0 , level = 0 , far = startFuel;
+        while(far < target){
+            while(i < stations.length && far >= stations[i][0]){
+                pq.add(stations[i][1]);
+                i++;
+            }
+            
+            if(pq.size()==0){
+                return -1;
+            }
+            
+            far += pq.remove();
+            level++;
+        }
+        
+        return level;
+    }
+}
     public static void main(String[] args) {
         
     }

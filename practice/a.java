@@ -16,16 +16,13 @@ public class a {
     }
 
    public static void main(String args[] ) throws Exception {
-   int n=1;
-   int moves = 0;
-   while(n-->0){
-       int ni = 6;
-       int m = solve(ni);
-       moves+=m;
-    //    System.out.println(ni);
-   }
 
-   System.out.println(moves);
+    if(1=="1"){
+        System.out.println("true");
+    }else{
+        System.out.println("false");
+    }
+    // System.out.println("moves");
        
 
   }

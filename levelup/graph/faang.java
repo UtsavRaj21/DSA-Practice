@@ -112,7 +112,6 @@ public class faang {
             int s = que.size();
             while (s-- > 0) {
                 String rstr = que.removeFirst();
-
                 int idx = -1;
 
                 for (int i = 0; i < rstr.length(); i++) {
@@ -120,7 +119,6 @@ public class faang {
                         idx = i;
                         break;
                     }
-
                 }
 
                 for (int e : dir[idx]) {

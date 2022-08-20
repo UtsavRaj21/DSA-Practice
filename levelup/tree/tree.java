@@ -247,7 +247,7 @@ public class tree {
         return -1;
     }
 
-    public static void burningTree2(TreeNode root, int target,ArrayList<ArrayList<Integer>> ans) {    // o(n) = 2n ..... o(s) = recurisive space + nothing
+    public static void burningTree2(TreeNode root, int target,ArrayList<ArrayList<Integer>> ans) {    // o(n) = 2n ..... o(s) = recurisive space + nothing6
         
         burningTree_helper(root, target, ans);
     }

@@ -287,8 +287,120 @@ public class basic {
 
     }
 
+    //-*******************************************************************************
+
+	public static void solution(char[][] arr, String[] words, int idx){
+		if(idx==words.length){
+		    print(arr);
+		    return;
+		}
+		
+		for(int i=0;i<arr.length;i++){
+		    for(int j=0;j<arr[0].length;j++){
+		        if(IsSafeplaceH(arr,i,j,words[idx])){
+		            boolean[] loc = placeH(arr,i,j,words[idx]);
+		            solution(arr,words,idx+1);
+		            unplaceH(arr,i,j,words[idx],loc);
+		        }
+		        
+		        if(IsSafeplaceV(arr,i,j,words[idx])){
+		            boolean[] loc = placeV(arr,i,j,words[idx]);
+		            solution(arr,words,idx+1);
+		            unplaceV(arr,i,j,words[idx],loc);
+		        }
+		    }
+		}
+	}
+	
+	public static boolean IsSafeplaceH(char[][] arr,int r,int c,String words){
+	     for(int i=0;i<words.length();i++){
+	         if (c + i >= arr[0].length)
+                return false;
+	         if(arr[r][c+i] != '-'  && arr[r][c+i]!=words.charAt(i)){
+	             return false;
+	         }
+	     }
+	     return true;
+	}
+	
+	public static boolean[] placeH(char[][] arr,int r,int c,String words){
+	    boolean[] loc = new boolean[words.length()];
+	    for(int i=0;i<words.length();i++){
+	        if(arr[r][c+i] =='-'){
+	            arr[r][c+i] = words.charAt(i);
+	            loc[i] = true;
+	        }
+	    }
+	    return loc;
+	}
+	
+	public static void unplaceH(char[][] arr,int r,int c,String words,boolean[] loc){
+	    for(int i=0;i<words.length();i++){
+	        if(loc[i] == true){
+	           arr[r][c+i] ='-';
+	        }
+	    }
+	}
+	
+	public static boolean IsSafeplaceV(char[][] arr,int r,int c,String words){
+	     for(int i=0;i<words.length();i++){
+	         if (r + i >= arr.length)
+                return false;
+	         if(arr[r+i][c] != '-'  && arr[r+i][c]!=words.charAt(i)){
+	             return false;
+	         }
+	     }
+	     return true;
+	}
+	
+	public static boolean[] placeV(char[][] arr,int r,int c,String words){
+	    boolean[] loc = new boolean[words.length()];
+	    for(int i=0;i<words.length();i++){
+	        if(arr[r+i][c] =='-'){
+	            arr[r+i][c] = words.charAt(i);
+	            loc[i] = true;
+	        }
+	    }
+	    return loc;
+	}
+	
+	public static void unplaceV(char[][] arr,int r,int c,String words,boolean[] loc){
+	    for(int i=0;i<words.length();i++){
+	        if(loc[i] == true){
+	           arr[r+i][c] ='-';
+	        }
+	    }
+	}
+
+	
+	public static void print(char[][] arr){
+		for(int i = 0 ; i < arr.length; i++){
+			for(int j = 0 ; j < arr.length; j++){
+				System.out.print(arr[i][j]);
+			}
+                  System.out.println();
+		}
+		
+	}}
+
     public static void main(String[] args) {
         // crypto();
-        subset();
+        Scanner scn = new Scanner(System.in);
+		char[][] arr = new char[10][10];
+		for(int i = 0 ; i < arr.length; i++){
+			String str = scn.next();
+			arr[i] = str.toCharArray();
+		}
+		int n = scn.nextInt();
+		String[] words = new String[n];
+		for(int i = 0 ; i  < words.length; i++){
+			words[i] = scn.next();
+		}
+	Arrays.sort(words, (a, b) -> {
+            return b.length() - a.length();
+        });
+           solution(arr, words,0);
+	
+        //subset();
     }
 }

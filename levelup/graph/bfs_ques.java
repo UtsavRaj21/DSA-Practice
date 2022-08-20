@@ -81,18 +81,18 @@ public class bfs_ques {
             }
         }
         grid[i][j] = 0;
-        return min;
+        return min+1;
 
     }
 
-    public static int shortestPathBinaryMatrix_dfs(int[][] grid) {
+    public static int shortestPathBinaryMatrix_dfs(int[][] grid) {       // TLE
         int n = grid.length, m = grid[0].length;
         if (grid[0][0] == 1 || grid[n - 1][m - 1] == 1)
             return -1;
 
         int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { -1, 1 }, { 1, 1 }, { 1, -1 }, { -1, -1 } };
 
-        return shortestPath(grid, 0, 0, dir) + 1;
+        return shortestPath(grid, 0, 0, dir);
 
     }
 

@@ -147,7 +147,7 @@ public class view {
         }
     }
 
-    public static void BootomView(TreeNode root){
+    public static void BottomView(TreeNode root){
         if(root == null) return;
 
         int[] minmax = new int[2];
@@ -507,6 +507,9 @@ public class view {
         }
     }
     
+    public static void list(Node head , int n){
+       
+    }
     public static void main(String args[]) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);

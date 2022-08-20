@@ -251,7 +251,8 @@ public class basic {
         }
         ListNode remove = slow.next;
         slow.next = remove.next;
-        remove.next = null;
+        remove.prev = slow;
+        remove.next =remove.prev =  null;
 
         return head;
     }

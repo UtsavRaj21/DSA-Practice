@@ -105,6 +105,34 @@ public class array{
         return count;
 
     }
+    
+    //
+    public int minFlips(int a, int b, int c) {
+        String aa = Integer.toBinaryString(a);
+        String bb = Integer.toBinaryString(a);
+        String cc = Integer.toBinaryString(a);
+        int idx = cc.length();
+        int count = 0;
+        while(idx >=0 ){
+            char ch = cc.charAt(idx);
+            if(ch == 1){
+                if(aa.charAt(idx) != 1 && bb.charAt(idx) != 1){
+                    count++;
+                }
+            }else{
+                if(aa.charAt(idx) == 1){
+                    count++;
+                }
+                if(bb.charAt(idx) == 1){
+                    count++;
+                }
+            }
+            idx--;
+        }
+
+        return count;
+    }
+    
     public static void main(String[] args){
 
     }
