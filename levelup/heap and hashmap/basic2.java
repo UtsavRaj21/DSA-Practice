@@ -477,7 +477,50 @@ public class basic2 {
         }
 		return count;
 	}
+
+    static int solve(List<Integer> arr, int n, int k)
+    {
+        int subArrayLen =n+1;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int i = 0, j = 0;
+       
+        while (j < n) {
+            map.put(arr.get(j), map.getOrDefault(arr.get(j), 0) + 1);
+            j++;
+           
+            if (map.size() < k)
+                continue;
+            while (map.size() == k)
+            {
+                int windowLen = (j - 1) - i + 1;
+               
+                if (windowLen < subArrayLen) {
+                    subArrayLen = windowLen;
+                }
+
+                if (map.get(arr.get(i)) == 1)
+                    map.remove(arr.get(i));
+                
+                else
+                    map.put(arr.get(i), map.get(arr.get(i)) - 1);
+                 
+                i++;
+            }
+        }
+ 
+        if (subArrayLen == n+1){
+            return -1;
+        }
+       return subArrayLen;
+    }
     public static void main(String[] args) {
-        
+        List<Integer> li=new ArrayList<>();
+        li.add(2);
+        li.add(2);
+        li.add(1);
+        li.add(1);
+        li.add(3);
+        int c = solve(li,5,3);
+        System.out.println(c);
     }
 }
